@@ -74,6 +74,8 @@ export interface IOrganicResult {
   link: string;
   snippet: string;
   position: number;
+  /** Sitelinks for this result, if any */
+  sitelinks?: any[];
 }
 
 /**
@@ -107,6 +109,8 @@ export interface ISearchResult {
     num?: number;
     page?: number;
     tbs?: "qdr:h" | "qdr:d" | "qdr:w" | "qdr:m" | "qdr:y";
+    /** Time taken for the search */
+    time?: string;
   };
   /** Knowledge graph data if available */
   knowledgeGraph?: IKnowledgeGraph;
@@ -127,4 +131,84 @@ export interface IScrapeResult {
   metadata?: Record<string, string>;
   jsonld?: Record<string, any>;
   credits?: number;
+}
+
+/** Parameters for health check */
+export interface IHealthParams {
+  /** Optional dummy parameter for health check */
+  dummy?: string;
+}
+
+/** Health check response */
+export interface IHealthResult {
+  /** Status message */
+  status: string;
+  /** API version */
+  version?: string;
+}
+
+/** Parameters for SERP analysis */
+export interface IAnalyzeSerpParams {
+  /** Search query to analyze */
+  query: string;
+  /** Geographical location for search results (e.g., "us") */
+  gl?: string;
+  /** Language for search results (e.g., "en") */
+  hl?: string;
+  /** Device type (desktop or mobile) */
+  device?: "desktop" | "mobile";
+  /** Google domain to use */
+  google_domain?: string;
+  /** Number of results to include */
+  num?: number;
+  /** Safe search setting */
+  safe?: "active" | "off";
+  /** Specific location */
+  location?: string;
+}
+
+/** SERP analysis result */
+export interface IAnalyzeSerpResult {
+  /** Structured SERP analysis data */
+  analyzedData: any;
+}
+
+/** Parameters for keyword research */
+export interface IResearchKeywordsParams {
+  /** Seed keyword to research */
+  keyword: string;
+  /** Language for results */
+  language?: string;
+  /** Location for results */
+  location?: string;
+  /** Whether to include questions in results */
+  include_questions?: boolean;
+  /** Whether to include related searches */
+  include_related?: boolean;
+  /** Whether to include suggestions */
+  include_suggestions?: boolean;
+}
+
+/** Keyword research result */
+export interface IResearchKeywordsResult {
+  /** Structured keyword research data */
+  keywordData: any;
+}
+
+/** Parameters for competitor analysis */
+export interface IAnalyzeCompetitorsParams {
+  /** Domain to analyze */
+  domain: string;
+  /** Keyword to analyze for (optional) */
+  keyword?: string;
+  /** Number of results to include */
+  num_results?: number;
+  /** Whether to include feature analysis */
+  include_features?: boolean;
+}
+
+/** Competitor analysis result */
+export interface IAnalyzeCompetitorsResult {
+  /** Structured competitor analysis data */
+  competitorData: any;
 }

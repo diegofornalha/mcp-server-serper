@@ -135,6 +135,124 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
+        name: "_health",
+        description: "Health check endpoint",
+        inputSchema: {
+          type: "object",
+          properties: {
+            random_string: {
+              type: "string",
+              description: "Dummy parameter for no-parameter tools"
+            }
+          },
+          required: ["random_string"]
+        }
+      },
+      {
+        name: "analyze_serp",
+        description: "Analyze a SERP (Search Engine Results Page) for a given query",
+        inputSchema: {
+          $schema: "http://json-schema.org/draft-07/schema#",
+          type: "object",
+          additionalProperties: false,
+          properties: {
+            query: {
+              type: "string"
+            },
+            gl: {
+              type: "string",
+              default: "us"
+            },
+            hl: {
+              type: "string",
+              default: "en"
+            },
+            google_domain: {
+              type: "string",
+              default: "google.com"
+            },
+            num: {
+              type: "number",
+              minimum: 1,
+              maximum: 100,
+              default: 10
+            },
+            device: {
+              type: "string",
+              enum: ["desktop", "mobile"],
+              default: "desktop"
+            },
+            location: {
+              type: "string"
+            },
+            safe: {
+              type: "string",
+              enum: ["active", "off"]
+            }
+          },
+          required: ["query"]
+        }
+      },
+      {
+        name: "research_keywords",
+        description: "Research keywords related to a given topic or seed keyword",
+        inputSchema: {
+          $schema: "http://json-schema.org/draft-07/schema#",
+          type: "object",
+          additionalProperties: false,
+          properties: {
+            keyword: {
+              type: "string" 
+            },
+            language: {
+              type: "string"
+            },
+            location: {
+              type: "string"
+            },
+            include_questions: {
+              type: "boolean",
+              default: false
+            },
+            include_related: {
+              type: "boolean",
+              default: false 
+            },
+            include_suggestions: {
+              type: "boolean",
+              default: false
+            }
+          },
+          required: ["keyword"]
+        }
+      },
+      {
+        name: "analyze_competitors",
+        description: "Analyze competitors for a given keyword or domain",
+        inputSchema: {
+          $schema: "http://json-schema.org/draft-07/schema#",
+          type: "object",
+          additionalProperties: false,
+          properties: {
+            domain: {
+              type: "string"
+            },
+            keyword: {
+              type: "string"
+            },
+            include_features: {
+              type: "boolean"
+            },
+            num_results: {
+              type: "number",
+              minimum: 1,
+              maximum: 100
+            }
+          },
+          required: ["domain"]
+        }
+      },
+      {
         name: "google_search",
         description:
           "Tool to perform web searches via Serper API and retrieve rich results. It is able to retrieve organic search results, people also ask, related searches, and knowledge graph.",
@@ -170,6 +288,133 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
  */
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   switch (request.params.name) {
+    case "_health": {
+      try {
+        const result = await searchTools.health();
+        return {
+          content: [
+            {
+              type: "text",
+              text: "Server is healthy"
+            },
+          ],
+        };
+      } catch (error) {
+        throw new Error(`Health check failed: ${error}`);
+      }
+    }
+    
+    case "analyze_serp": {
+      const { 
+        query, 
+        gl = "us", 
+        hl = "en", 
+        google_domain = "google.com", 
+        num = 10, 
+        device = "desktop", 
+        location, 
+        safe 
+      } = request.params.arguments || {};
+      
+      if (!query) {
+        throw new Error("Query is required for SERP analysis");
+      }
+      
+      try {
+        const result = await searchTools.analyzeSERP({
+          query: String(query),
+          gl: gl as string,
+          hl: hl as string,
+          num: Number(num),
+          device: (device as string) as "desktop" | "mobile",
+          location: location as string | undefined,
+          google_domain: google_domain as string,
+          safe: (safe as string) as "active" | "off" | undefined
+        });
+        
+        return {
+          content: [
+            {
+              type: "text",
+              text: result.analyzedData
+            },
+          ],
+        };
+      } catch (error) {
+        throw new Error(`SERP analysis failed: ${error}`);
+      }
+    }
+    
+    case "research_keywords": {
+      const { 
+        keyword, 
+        language, 
+        location, 
+        include_questions = false, 
+        include_related = false, 
+        include_suggestions = false 
+      } = request.params.arguments || {};
+      
+      if (!keyword) {
+        throw new Error("Keyword is required for keyword research");
+      }
+      
+      try {
+        const result = await searchTools.researchKeywords({
+          keyword: String(keyword),
+          language: language as string | undefined,
+          location: location as string | undefined,
+          include_questions: Boolean(include_questions),
+          include_related: Boolean(include_related),
+          include_suggestions: Boolean(include_suggestions)
+        });
+        
+        return {
+          content: [
+            {
+              type: "text",
+              text: result.keywordData
+            },
+          ],
+        };
+      } catch (error) {
+        throw new Error(`Keyword research failed: ${error}`);
+      }
+    }
+    
+    case "analyze_competitors": {
+      const { 
+        domain, 
+        keyword, 
+        include_features = false, 
+        num_results 
+      } = request.params.arguments || {};
+      
+      if (!domain) {
+        throw new Error("Domain is required for competitor analysis");
+      }
+      
+      try {
+        const result = await searchTools.analyzeCompetitors({
+          domain: String(domain),
+          keyword: keyword as string | undefined,
+          include_features: Boolean(include_features),
+          num_results: num_results ? Number(num_results) : undefined
+        });
+        
+        return {
+          content: [
+            {
+              type: "text",
+              text: result.competitorData
+            },
+          ],
+        };
+      } catch (error) {
+        throw new Error(`Competitor analysis failed: ${error}`);
+      }
+    }
+
     case "google_search": {
       const {
         q,

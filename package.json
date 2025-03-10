@@ -22,6 +22,7 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "0.6.0",
     "dotenv": "^16.4.7",
+    "google-search-results-nodejs": "^2.1.0",
     "node-fetch": "^2.7.0"
   },
   "devDependencies": {

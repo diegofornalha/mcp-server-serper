@@ -4,6 +4,14 @@ import {
   ISearchResult,
   IScrapeParams,
   IScrapeResult,
+  IHealthParams,
+  IHealthResult,
+  IAnalyzeSerpParams, 
+  IAnalyzeSerpResult,
+  IResearchKeywordsParams,
+  IResearchKeywordsResult,
+  IAnalyzeCompetitorsParams,
+  IAnalyzeCompetitorsResult
 } from "../types/serper.js";
 
 /**
@@ -49,6 +57,61 @@ export class SerperSearchTools {
       return result;
     } catch (error) {
       throw new Error(`SearchTool: failed to scrape. ${error}`);
+    }
+  }
+
+  /**
+   * Execute a health check.
+   * @returns Promise resolving to health status
+   */
+  async health(params?: IHealthParams): Promise<IHealthResult> {
+    try {
+      const result = await this.serperClient.health(params);
+      return result;
+    } catch (error) {
+      throw new Error(`SearchTool: health check failed. ${error}`);
+    }
+  }
+
+  /**
+   * Analyze SERP for a query.
+   * @param params - SERP analysis parameters
+   * @returns Promise resolving to SERP analysis
+   */
+  async analyzeSERP(params: IAnalyzeSerpParams): Promise<IAnalyzeSerpResult> {
+    try {
+      const result = await this.serperClient.analyzeSERP(params);
+      return result;
+    } catch (error) {
+      throw new Error(`SearchTool: failed to analyze SERP for "${params.query}". ${error}`);
+    }
+  }
+
+  /**
+   * Research keywords related to a seed keyword.
+   * @param params - Keyword research parameters
+   * @returns Promise resolving to keyword research data
+   */
+  async researchKeywords(params: IResearchKeywordsParams): Promise<IResearchKeywordsResult> {
+    try {
+      const result = await this.serperClient.researchKeywords(params);
+      return result;
+    } catch (error) {
+      throw new Error(`SearchTool: failed to research keywords for "${params.keyword}". ${error}`);
+    }
+  }
+
+  /**
+   * Analyze competitors for a domain/keyword.
+   * @param params - Competitor analysis parameters
+   * @returns Promise resolving to competitor analysis data
+   */
+  async analyzeCompetitors(params: IAnalyzeCompetitorsParams): Promise<IAnalyzeCompetitorsResult> {
+    try {
+      const result = await this.serperClient.analyzeCompetitors(params);
+      return result;
+    } catch (error) {
+      throw new Error(`SearchTool: failed to analyze competitors for "${params.domain}". ${error}`);
     }
   }
 }
