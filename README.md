@@ -1,5 +1,5 @@
 # Serper Search and Scrape MCP Server
-[![smithery badge](https://smithery.ai/badge/@marcopesani/mcp-server-serper)](https://smithery.ai/server/@marcopesani/mcp-server-serper)
+[![smithery badge](https://smithery.ai/badge/@marcopesani/mcp-server-serper)](https://smithery.ai/server/@diegofornalha/mcp-server-serper)
 
 A TypeScript-based MCP server that provides web search and webpage scraping capabilities using the Serper API. This server integrates with Claude Desktop to enable powerful web search and content extraction features.
 

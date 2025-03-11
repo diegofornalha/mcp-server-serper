@@ -1,0 +1,20 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY mcp_serper_server.py /app/
+
+# Configurar o Python para não criar arquivos .pyc
+ENV PYTHONDONTWRITEBYTECODE=1
+# Desabilitar o buffer para logs mais imediatos
+ENV PYTHONUNBUFFERED=1
+
+# Definir permissões executáveis
+RUN chmod +x /app/mcp_serper_server.py
+
+# Executar como não-root
+RUN useradd -m appuser
+USER appuser
+
+# Executar o servidor
+CMD ["python", "mcp_serper_server.py"] 

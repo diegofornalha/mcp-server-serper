@@ -1,114 +1,116 @@
-```markdown
-# 🧰 Tools
+# 🔍 Ferramentas de Busca com Serper (tools)
+
+Este repositório contém a ferramenta `search-tool.ts` que facilita a interação com a API Serper para realizar buscas, raspagem de dados, análise de SERP, pesquisa de palavras-chave e análise de concorrentes.
 
 📋 **Sumário**
 
-- [🔍 Visão Geral](#visão-geral)
-- [⚙️ Requisitos](#requisitos)
-- [💾 Instalação](#instalação)
-- [🛠️ Utilização](#utilização)
-- [📂 Componentes/Algoritmos](#componentesalgoritmos)
-    - [✨ Algoritmo A](#algoritmo-a)
-    - [🚀 Algoritmo B](#algoritmo-b)
-- [💡 Exemplos](#exemplos)
+- [Visão Geral](#-visão-geral)
+- [Funcionalidades](#-funcionalidades)
+- [Requisitos](#-requisitos)
+- [Instalação](#-instalação)
+- [Uso](#-uso)
+- [Exemplos de Uso](#-exemplos-de-uso)
+- [Tratamento de Erros](#-tratamento-de-erros)
 
 
+## 🔍 Visão Geral
 
-🔍 **Visão Geral**
+A classe `SerperSearchTools` encapsula um cliente da API Serper, simplificando o processo de realizar diversas operações relacionadas a mecanismos de busca. Ela oferece métodos para realizar buscas na web, extrair dados de páginas web (raspagem), analisar resultados de pesquisa (SERP), pesquisar palavras-chave e analisar concorrentes.
 
-Este repositório "Tools" contém um conjunto de ferramentas e algoritmos úteis para diversas tarefas.  Ele foi projetado para ser fácil de usar e integrar em outros projetos.  A estrutura modular permite que você utilize apenas os componentes necessários.
+## ✨ Funcionalidades
 
-⚙️ **Requisitos**
+A classe `SerperSearchTools` fornece as seguintes funcionalidades:
 
-- Python 3.6 ou superior
+- **Busca na Web:** Realiza buscas na web usando a API Serper.
+- **Raspagem de Dados:** Extrai dados específicos de páginas web.
+- **Análise de SERP:** Analisa os resultados da página de resultados do mecanismo de busca (SERP).
+- **Pesquisa de Palavras-Chave:** Realiza pesquisa de palavras-chave relevantes.
+- **Análise de Concorrentes:** Analisa os concorrentes em relação a determinadas palavras-chave.
 
-💾 **Instalação**
+## 🧩 Requisitos
 
-1. Clone o repositório:
+- Node.js e npm (ou yarn) instalados.
+- Uma chave de API válida para a Serper.
+- TypeScript instalado (recomendado).
+
+## 💾 Instalação
+
+1. Clone este repositório:
 
 ```bash
-git clone https://github.com/seu_usuario/tools.git
+git clone <URL_DO_REPOSITÓRIO>
 ```
 
-2. Navegue até o diretório:
+2. Navegue até o diretório `tools`:
 
 ```bash
 cd tools
 ```
 
+3. Instale as dependências:
 
-🛠️ **Utilização**
-
-Importe o módulo desejado e utilize suas funções:
-
-```python
-from tools import algoritmo_a, algoritmo_b
-
-resultado_a = algoritmo_a.funcao_a(argumentos)
-resultado_b = algoritmo_b.funcao_b(argumentos)
+```bash
+npm install
+# ou
+yarn install
 ```
 
+## 🚀 Uso
 
+1. Importe a classe `SerperSearchTools` no seu projeto:
 
-📂 **Componentes/Algoritmos**
-
-
-✨ **Algoritmo A**
-
-- **Conceito/Funcionalidade:** Este algoritmo realiza a tarefa X de forma eficiente. Ele utiliza a estratégia Y para otimizar o processamento.
-- **Complexidade de Tempo:** O(n) - Linear
-- **Complexidade de Espaço:** O(1) - Constante
-- **Exemplo de Uso:**
-
-```python
-from tools import algoritmo_a
-
-lista = [1, 2, 3, 4, 5]
-resultado = algoritmo_a.funcao_a(lista)
-print(resultado) # Saída: [resultado do processamento]
+```typescript
+import { SerperSearchTools } from './search-tool';
 ```
 
+2. Crie uma instância da classe, fornecendo sua chave de API Serper:
 
-
-🚀 **Algoritmo B**
-
-- **Conceito/Funcionalidade:** Este algoritmo implementa a técnica Z para resolver o problema W.
-- **Complexidade de Tempo:** O(log n) - Logarítmica
-- **Complexidade de Espaço:** O(n) - Linear
-- **Exemplo de Uso:**
-
-```python
-from tools import algoritmo_b
-
-valor = 10
-resultado = algoritmo_b.funcao_b(valor)
-print(resultado) # Saída: [resultado do processamento]
+```typescript
+const serper = new SerperSearchTools('SUA_CHAVE_API_SERPER');
 ```
 
+3. Utilize os métodos da classe para realizar as operações desejadas (veja exemplos na seção [Exemplos de Uso](#-exemplos-de-uso)).
 
 
-💡 **Exemplos**
+## ⌨️ Exemplos de Uso
 
-Aqui estão alguns exemplos práticos de como utilizar as ferramentas:
+```typescript
+// Realizar uma busca na web
+const results = await serper.search('Como fazer bolo de chocolate');
+console.log(results);
 
-```python
-from tools import algoritmo_a, algoritmo_b
+// Raspar dados de uma URL específica (requer configuração adicional na API Serper)
+const scrapedData = await serper.scrape('https://www.exemplo.com.br', {
+  // ... opções de raspagem
+});
+console.log(scrapedData);
 
-# Exemplo 1: Combinando Algoritmo A e B
-lista = [1, 10, 100]
-resultados = [algoritmo_b.funcao_b(x) for x in algoritmo_a.funcao_a(lista)]
-print(resultados)
+// Analisar a SERP para uma palavra-chave
+const serpAnalysis = await serper.analyzeSerp('bolo de chocolate');
+console.log(serpAnalysis);
 
-# Exemplo 2: Usando Algoritmo A com diferentes entradas
-lista1 = [1, 2, 3]
-lista2 = [4, 5, 6]
-resultado1 = algoritmo_a.funcao_a(lista1)
-resultado2 = algoritmo_a.funcao_a(lista2)
-print(resultado1, resultado2)
+
+// Pesquisa de palavras-chave (requer funcionalidades específicas na API Serper)
+const keywords = await serper.keywordResearch('receita');
+console.log(keywords);
+
+
+// Análise de concorrentes (requer funcionalidades específicas na API Serper)
+const competitors = await serper.analyzeCompetitors('bolo de chocolate', ['concorrente1.com', 'concorrente2.com']);
+console.log(competitors);
 ```
 
-**(Observação: Substitua `[resultado do processamento]` pela saída real dos algoritmos.  Substitua também `seu_usuario` pelo seu nome de usuário do GitHub.)**
+## ⚠️ Tratamento de Erros
+
+A classe `SerperSearchTools` inclui tratamento de erros básico para lidar com problemas na comunicação com a API Serper.  Em caso de erro, um objeto de erro será lançado.  É importante capturar esses erros e tratá-los adequadamente em sua aplicação:
+
+```typescript
+try {
+  const results = await serper.search('alguma query');
+  console.log(results);
+} catch (error) {
+  console.error('Ocorreu um erro:', error);
+  // Implemente a lógica de tratamento de erros aqui
+}
+
 ```
-
-
-Lembre-se que este é um exemplo e você deve adaptá-lo ao código real dentro da pasta `tools`, preenchendo as informações sobre os algoritmos (A e B, neste caso) com os nomes e funcionalidades reais.  Crie também os arquivos `.py` correspondentes dentro da pasta para que os exemplos de código funcionem corretamente.  Se a pasta `tools` contiver subpastas,  ajuste o README e os exemplos de importação conforme necessário.
