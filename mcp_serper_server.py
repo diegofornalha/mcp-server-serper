@@ -305,6 +305,298 @@ class SerperClient:
             **({"num": num} if num else {})
         })
 
+    def maps_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Realiza uma busca de mapas usando a API Serper.
+        
+        Args:
+            params: Parâmetros para a busca de mapas
+            
+        Returns:
+            Resultados da busca de mapas
+        """
+        try:
+            # Prepara o payload com os parâmetros necessários
+            payload = {
+                "q": params["q"]
+            }
+            
+            # Adiciona parâmetros opcionais
+            if "location" in params:
+                payload["location"] = params["location"]
+            if "gl" in params:
+                payload["gl"] = params["gl"]
+            if "hl" in params:
+                payload["hl"] = params["hl"]
+            if "num" in params:
+                payload["num"] = params["num"]
+                
+            response = self._make_request("POST", "/maps", payload)
+            return {"mapsResults": response}
+        except Exception as e:
+            logger.error(f"Error in maps_search: {e}")
+            raise Exception(f"Failed to search for maps with query '{params.get('q')}': {e}")
+    
+    def reviews_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Realiza uma busca de avaliações usando a API Serper.
+        
+        Args:
+            params: Parâmetros para a busca de avaliações
+            
+        Returns:
+            Resultados da busca de avaliações
+        """
+        try:
+            # Prepara o payload com os parâmetros necessários
+            payload = {
+                "q": params["q"]
+            }
+            
+            # Adiciona parâmetros opcionais
+            if "location" in params:
+                payload["location"] = params["location"]
+            if "gl" in params:
+                payload["gl"] = params["gl"]
+            if "hl" in params:
+                payload["hl"] = params["hl"]
+            if "num" in params:
+                payload["num"] = params["num"]
+                
+            response = self._make_request("POST", "/reviews", payload)
+            return {"reviewsResults": response}
+        except Exception as e:
+            logger.error(f"Error in reviews_search: {e}")
+            raise Exception(f"Failed to search for reviews with query '{params.get('q')}': {e}")
+    
+    def shopping_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Realiza uma busca de produtos para compras usando a API Serper.
+        
+        Args:
+            params: Parâmetros para a busca de produtos
+            
+        Returns:
+            Resultados da busca de produtos
+        """
+        try:
+            # Prepara o payload com os parâmetros necessários
+            payload = {
+                "q": params["q"]
+            }
+            
+            # Adiciona parâmetros opcionais
+            if "location" in params:
+                payload["location"] = params["location"]
+            if "gl" in params:
+                payload["gl"] = params["gl"]
+            if "hl" in params:
+                payload["hl"] = params["hl"]
+            if "num" in params:
+                payload["num"] = params["num"]
+                
+            response = self._make_request("POST", "/shopping", payload)
+            return {"shoppingResults": response}
+        except Exception as e:
+            logger.error(f"Error in shopping_search: {e}")
+            raise Exception(f"Failed to search for products with query '{params.get('q')}': {e}")
+    
+    def lens_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Realiza uma busca por imagem (Google Lens) usando a API Serper.
+        
+        Args:
+            params: Parâmetros para a busca por imagem
+                image_url: URL da imagem para buscar
+                
+        Returns:
+            Resultados da busca por imagem
+        """
+        try:
+            # Prepara o payload com os parâmetros necessários
+            payload = {
+                "image_url": params["image_url"]
+            }
+            
+            # Adiciona parâmetros opcionais
+            if "location" in params:
+                payload["location"] = params["location"]
+            if "gl" in params:
+                payload["gl"] = params["gl"]
+            if "hl" in params:
+                payload["hl"] = params["hl"]
+                
+            response = self._make_request("POST", "/lens", payload)
+            return {"lensResults": response}
+        except Exception as e:
+            logger.error(f"Error in lens_search: {e}")
+            raise Exception(f"Failed to search with image '{params.get('image_url')}': {e}")
+    
+    def scholar_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Realiza uma busca acadêmica (Google Scholar) usando a API Serper.
+        
+        Args:
+            params: Parâmetros para a busca acadêmica
+            
+        Returns:
+            Resultados da busca acadêmica
+        """
+        try:
+            # Prepara o payload com os parâmetros necessários
+            payload = {
+                "q": params["q"]
+            }
+            
+            # Adiciona parâmetros opcionais
+            if "location" in params:
+                payload["location"] = params["location"]
+            if "gl" in params:
+                payload["gl"] = params["gl"]
+            if "hl" in params:
+                payload["hl"] = params["hl"]
+            if "num" in params:
+                payload["num"] = params["num"]
+            if "year_min" in params:
+                payload["year_min"] = params["year_min"]
+            if "year_max" in params:
+                payload["year_max"] = params["year_max"]
+                
+            response = self._make_request("POST", "/scholar", payload)
+            return {"scholarResults": response}
+        except Exception as e:
+            logger.error(f"Error in scholar_search: {e}")
+            raise Exception(f"Failed to search for academic papers with query '{params.get('q')}': {e}")
+    
+    def patents_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Realiza uma busca de patentes usando a API Serper.
+        
+        Args:
+            params: Parâmetros para a busca de patentes
+            
+        Returns:
+            Resultados da busca de patentes
+        """
+        try:
+            # Prepara o payload com os parâmetros necessários
+            payload = {
+                "q": params["q"]
+            }
+            
+            # Adiciona parâmetros opcionais
+            if "location" in params:
+                payload["location"] = params["location"]
+            if "gl" in params:
+                payload["gl"] = params["gl"]
+            if "hl" in params:
+                payload["hl"] = params["hl"]
+            if "num" in params:
+                payload["num"] = params["num"]
+            if "patent_office" in params:
+                payload["patent_office"] = params["patent_office"]
+                
+            response = self._make_request("POST", "/patents", payload)
+            return {"patentsResults": response}
+        except Exception as e:
+            logger.error(f"Error in patents_search: {e}")
+            raise Exception(f"Failed to search for patents with query '{params.get('q')}': {e}")
+    
+    def webpage_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Realiza uma busca específica de uma página web usando a API Serper.
+        
+        Args:
+            params: Parâmetros para a busca de página web
+                url: URL da página web para buscar informações
+                
+        Returns:
+            Resultados da busca de página web
+        """
+        try:
+            # Prepara o payload com os parâmetros necessários
+            payload = {
+                "url": params["url"]
+            }
+            
+            # Adiciona parâmetros opcionais
+            if "extract_content" in params:
+                payload["extract_content"] = params["extract_content"]
+            if "extract_metadata" in params:
+                payload["extract_metadata"] = params["extract_metadata"]
+                
+            response = self._make_request("POST", "/webpage", payload)
+            return {"webpageResults": response}
+        except Exception as e:
+            logger.error(f"Error in webpage_search: {e}")
+            raise Exception(f"Failed to get webpage information for '{params.get('url')}': {e}")
+    
+    def news_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Realiza uma busca de notícias usando a API Serper.
+        
+        Args:
+            params: Parâmetros para a busca de notícias
+            
+        Returns:
+            Resultados da busca de notícias
+        """
+        try:
+            # Prepara o payload com os parâmetros necessários
+            payload = {
+                "q": params["q"]
+            }
+            
+            # Adiciona parâmetros opcionais
+            if "location" in params:
+                payload["location"] = params["location"]
+            if "gl" in params:
+                payload["gl"] = params["gl"]
+            if "hl" in params:
+                payload["hl"] = params["hl"]
+            if "num" in params:
+                payload["num"] = params["num"]
+            if "timerange" in params:
+                payload["timerange"] = params["timerange"]
+                
+            response = self._make_request("POST", "/news", payload)
+            return {"newsResults": response}
+        except Exception as e:
+            logger.error(f"Error in news_search: {e}")
+            raise Exception(f"Failed to search for news with query '{params.get('q')}': {e}")
+    
+    def places_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Realiza uma busca de lugares usando a API Serper.
+        
+        Args:
+            params: Parâmetros para a busca de lugares
+            
+        Returns:
+            Resultados da busca de lugares
+        """
+        try:
+            # Prepara o payload com os parâmetros necessários
+            payload = {
+                "q": params["q"]
+            }
+            
+            # Adiciona parâmetros opcionais
+            if "location" in params:
+                payload["location"] = params["location"]
+            if "gl" in params:
+                payload["gl"] = params["gl"]
+            if "hl" in params:
+                payload["hl"] = params["hl"]
+            if "num" in params:
+                payload["num"] = params["num"]
+                
+            response = self._make_request("POST", "/places", payload)
+            return {"placesResults": response}
+        except Exception as e:
+            logger.error(f"Error in places_search: {e}")
+            raise Exception(f"Failed to search for places with query '{params.get('q')}': {e}")
+
 
 class SerperSearchTools:
     """Implementação das ferramentas de busca para o servidor MCP."""
@@ -464,6 +756,141 @@ class SerperSearchTools:
     def video_search(self, query, location=None, gl=None, hl=None, num=None):
         """Search for videos using the Serper API."""
         return self.serper_client.video_search(query, location, gl, hl, num)
+
+    def maps_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Executa uma busca de mapas.
+        
+        Args:
+            params: Parâmetros da busca
+            
+        Returns:
+            Resultados da busca de mapas
+        """
+        try:
+            return self.serper_client.maps_search(params)
+        except Exception as e:
+            raise Exception(f"SearchTool: failed to search maps for '{params.get('q')}'. {e}")
+    
+    def reviews_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Executa uma busca de avaliações.
+        
+        Args:
+            params: Parâmetros da busca
+            
+        Returns:
+            Resultados da busca de avaliações
+        """
+        try:
+            return self.serper_client.reviews_search(params)
+        except Exception as e:
+            raise Exception(f"SearchTool: failed to search reviews for '{params.get('q')}'. {e}")
+    
+    def shopping_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Executa uma busca de produtos para compras.
+        
+        Args:
+            params: Parâmetros da busca
+            
+        Returns:
+            Resultados da busca de produtos
+        """
+        try:
+            return self.serper_client.shopping_search(params)
+        except Exception as e:
+            raise Exception(f"SearchTool: failed to search shopping for '{params.get('q')}'. {e}")
+    
+    def lens_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Executa uma busca por imagem (Google Lens).
+        
+        Args:
+            params: Parâmetros da busca
+            
+        Returns:
+            Resultados da busca por imagem
+        """
+        try:
+            return self.serper_client.lens_search(params)
+        except Exception as e:
+            raise Exception(f"SearchTool: failed to search with image '{params.get('image_url')}'. {e}")
+    
+    def scholar_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Executa uma busca acadêmica (Google Scholar).
+        
+        Args:
+            params: Parâmetros da busca
+            
+        Returns:
+            Resultados da busca acadêmica
+        """
+        try:
+            return self.serper_client.scholar_search(params)
+        except Exception as e:
+            raise Exception(f"SearchTool: failed to search scholar for '{params.get('q')}'. {e}")
+    
+    def patents_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Executa uma busca de patentes.
+        
+        Args:
+            params: Parâmetros da busca
+            
+        Returns:
+            Resultados da busca de patentes
+        """
+        try:
+            return self.serper_client.patents_search(params)
+        except Exception as e:
+            raise Exception(f"SearchTool: failed to search patents for '{params.get('q')}'. {e}")
+    
+    def webpage_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Executa uma busca específica de uma página web.
+        
+        Args:
+            params: Parâmetros da busca
+            
+        Returns:
+            Resultados da busca de página web
+        """
+        try:
+            return self.serper_client.webpage_search(params)
+        except Exception as e:
+            raise Exception(f"SearchTool: failed to get webpage information for '{params.get('url')}'. {e}")
+    
+    def news_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Executa uma busca de notícias.
+        
+        Args:
+            params: Parâmetros da busca
+            
+        Returns:
+            Resultados da busca de notícias
+        """
+        try:
+            return self.serper_client.news_search(params)
+        except Exception as e:
+            raise Exception(f"SearchTool: failed to search news for '{params.get('q')}'. {e}")
+    
+    def places_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Executa uma busca de lugares.
+        
+        Args:
+            params: Parâmetros da busca
+            
+        Returns:
+            Resultados da busca de lugares
+        """
+        try:
+            return self.serper_client.places_search(params)
+        except Exception as e:
+            raise Exception(f"SearchTool: failed to search places for '{params.get('q')}'. {e}")
 
 
 # Inicializa cliente Serper com a chave da API do ambiente
@@ -720,6 +1147,235 @@ tools_definitions = {
             }
         },
         "required": ["queries"]
+    },
+    "serper_maps_search": {
+        "description": "Tool to search for maps and locations using the Serper API.",
+        "parameters": {
+            "q": {
+                "description": "Search query string for maps (e.g., 'restaurants in New York', 'parks in London')",
+                "type": "string"
+            },
+            "gl": {
+                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "type": "string"
+            },
+            "hl": {
+                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "type": "string"
+            },
+            "location": {
+                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "type": "string"
+            },
+            "num": {
+                "description": "Number of results to return (default: 10)",
+                "type": "number"
+            }
+        }
+    },
+    "serper_reviews_search": {
+        "description": "Tool to search for reviews using the Serper API.",
+        "parameters": {
+            "q": {
+                "description": "Search query string for reviews (e.g., 'iPhone 13 reviews', 'hotel reviews in Paris')",
+                "type": "string"
+            },
+            "gl": {
+                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "type": "string"
+            },
+            "hl": {
+                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "type": "string"
+            },
+            "location": {
+                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "type": "string"
+            },
+            "num": {
+                "description": "Number of results to return (default: 10)",
+                "type": "number"
+            }
+        }
+    },
+    "serper_shopping_search": {
+        "description": "Tool to search for products and shopping information using the Serper API.",
+        "parameters": {
+            "q": {
+                "description": "Search query string for products (e.g., 'best smartphones 2024', 'running shoes')",
+                "type": "string"
+            },
+            "gl": {
+                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "type": "string"
+            },
+            "hl": {
+                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "type": "string"
+            },
+            "location": {
+                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "type": "string"
+            },
+            "num": {
+                "description": "Number of results to return (default: 10)",
+                "type": "number"
+            }
+        }
+    },
+    "serper_lens_search": {
+        "description": "Tool to search for information about an image using Google Lens via the Serper API.",
+        "parameters": {
+            "image_url": {
+                "description": "URL of the image to search with (must be a publicly accessible image URL)",
+                "type": "string"
+            },
+            "gl": {
+                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "type": "string"
+            },
+            "hl": {
+                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "type": "string"
+            },
+            "location": {
+                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "type": "string"
+            }
+        }
+    },
+    "serper_scholar_search": {
+        "description": "Tool to search for academic papers and scholarly information using the Serper API.",
+        "parameters": {
+            "q": {
+                "description": "Search query string for academic papers (e.g., 'machine learning advances', 'climate change research')",
+                "type": "string"
+            },
+            "gl": {
+                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "type": "string"
+            },
+            "hl": {
+                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "type": "string"
+            },
+            "location": {
+                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "type": "string"
+            },
+            "num": {
+                "description": "Number of results to return (default: 10)",
+                "type": "number"
+            },
+            "year_min": {
+                "description": "Minimum publication year to filter results (e.g., 2020)",
+                "type": "number"
+            },
+            "year_max": {
+                "description": "Maximum publication year to filter results (e.g., 2023)",
+                "type": "number"
+            }
+        }
+    },
+    "serper_patents_search": {
+        "description": "Tool to search for patents information using the Serper API.",
+        "parameters": {
+            "q": {
+                "description": "Search query string for patents (e.g., 'artificial intelligence patents', 'electric vehicle charging')",
+                "type": "string"
+            },
+            "gl": {
+                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "type": "string"
+            },
+            "hl": {
+                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "type": "string"
+            },
+            "location": {
+                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "type": "string"
+            },
+            "num": {
+                "description": "Number of results to return (default: 10)",
+                "type": "number"
+            },
+            "patent_office": {
+                "description": "Patent office to search in (e.g., 'USPTO', 'EPO', 'WIPO')",
+                "type": "string"
+            }
+        }
+    },
+    "serper_webpage_search": {
+        "description": "Tool to get detailed information about a specific webpage using the Serper API.",
+        "parameters": {
+            "url": {
+                "description": "URL of the webpage to analyze (must be a publicly accessible URL)",
+                "type": "string"
+            },
+            "extract_content": {
+                "description": "Whether to extract the main content from the webpage (default: true)",
+                "type": "boolean"
+            },
+            "extract_metadata": {
+                "description": "Whether to extract metadata from the webpage (default: true)",
+                "type": "boolean"
+            }
+        }
+    },
+    "serper_news_search": {
+        "description": "Tool to search for news articles using the Serper API.",
+        "parameters": {
+            "q": {
+                "description": "Search query string for news articles (e.g., 'latest tech news', 'covid-19 updates')",
+                "type": "string"
+            },
+            "gl": {
+                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "type": "string"
+            },
+            "hl": {
+                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "type": "string"
+            },
+            "location": {
+                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "type": "string"
+            },
+            "num": {
+                "description": "Number of results to return (default: 10)",
+                "type": "number"
+            },
+            "timerange": {
+                "description": "Time range for news articles (e.g., 'd' for day, 'w' for week, 'm' for month)",
+                "type": "string"
+            }
+        }
+    },
+    "serper_places_search": {
+        "description": "Tool to search for places and locations using the Serper API.",
+        "parameters": {
+            "q": {
+                "description": "Search query string for places (e.g., 'restaurants near me', 'parks in San Francisco')",
+                "type": "string"
+            },
+            "gl": {
+                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "type": "string"
+            },
+            "hl": {
+                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "type": "string"
+            },
+            "location": {
+                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "type": "string"
+            },
+            "num": {
+                "description": "Number of results to return (default: 10)",
+                "type": "number"
+            }
+        }
     }
 }
 
@@ -827,6 +1483,105 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                 
             elif tool_name == "autocomplete":
                 result = search_tools.autocomplete(arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "serper_maps_search":
+                result = search_tools.maps_search(arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "serper_reviews_search":
+                result = search_tools.reviews_search(arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "serper_shopping_search":
+                result = search_tools.shopping_search(arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "serper_lens_search":
+                result = search_tools.lens_search(arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "serper_scholar_search":
+                result = search_tools.scholar_search(arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "serper_patents_search":
+                result = search_tools.patents_search(arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "serper_webpage_search":
+                result = search_tools.webpage_search(arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "serper_news_search":
+                result = search_tools.news_search(arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "serper_places_search":
+                result = search_tools.places_search(arguments)
                 return {
                     "id": message_id,
                     "result": {
