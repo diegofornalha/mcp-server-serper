@@ -295,6 +295,16 @@ class SerperClient:
             logger.error(f"Error in image_search: {e}")
             raise Exception(f"Failed to search for images with query '{params.get('q')}': {e}")
 
+    def video_search(self, query, location=None, gl=None, hl=None, num=None):
+        """Search for videos using the Serper API."""
+        return self._make_request("/videos", {
+            "q": query,
+            **({"location": location} if location else {}),
+            **({"gl": gl} if gl else {}),
+            **({"hl": hl} if hl else {}),
+            **({"num": num} if num else {})
+        })
+
 
 class SerperSearchTools:
     """Implementação das ferramentas de busca para o servidor MCP."""
@@ -450,6 +460,10 @@ class SerperSearchTools:
             return self.serper_client.autocomplete(query_list)
         except Exception as e:
             raise Exception(f"SearchTool: failed to get autocomplete suggestions. {e}")
+
+    def video_search(self, query, location=None, gl=None, hl=None, num=None):
+        """Search for videos using the Serper API."""
+        return self.serper_client.video_search(query, location, gl, hl, num)
 
 
 # Inicializa cliente Serper com a chave da API do ambiente
