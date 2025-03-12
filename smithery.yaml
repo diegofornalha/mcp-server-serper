@@ -10,12 +10,12 @@ startCommand:
     properties:
       serperApiKey:
         type: string
-        description: The API key for the Serper MCP server.
+        description: "Chave de API para o servidor MCP Serper."
       language:
         type: string
         enum: ['typescript', 'python']
-        description: The language implementation to use (typescript or python)
-        default: 'typescript'
+        description: "Linguagem de implementação a ser usada (typescript ou python)"
+        default: 'python'
   commandFunction:
     # A function that produces the CLI command to start the MCP on stdio.
     |-

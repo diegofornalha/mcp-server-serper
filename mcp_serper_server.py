@@ -905,223 +905,206 @@ search_tools = SerperSearchTools(serper_client)
 # Definições das ferramentas disponíveis
 tools_definitions = {
     "google_search": {
-        "description": "Tool to perform web searches via Serper API and retrieve rich results. It is able to retrieve organic search results, people also ask, related searches, and knowledge graph.",
+        "description": "Ferramenta para realizar buscas na web via API Serper e recuperar resultados completos. Capaz de recuperar resultados orgânicos de busca, pessoas também perguntam, buscas relacionadas e gráfico de conhecimento.",
         "parameters": {
             "q": {
-                "description": "Search query string (e.g., 'artificial intelligence', 'climate change solutions')",
+                "description": "String de consulta de busca (ex: 'inteligência artificial', 'soluções para mudanças climáticas')",
                 "type": "string"
             },
             "gl": {
-                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "description": "Código de região opcional para resultados da busca no formato ISO 3166-1 alpha-2 (ex: 'us', 'br', 'pt')",
                 "type": "string"
             },
             "hl": {
-                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "description": "Código de idioma opcional para resultados da busca no formato ISO 639-1 (ex: 'en', 'pt', 'es')",
+                "type": "string"
+            },
+            "location": {
+                "description": "Localização opcional para resultados da busca (ex: 'São Paulo, Brasil', 'Rio de Janeiro, Brasil')",
                 "type": "string"
             },
             "num": {
-                "type": "number",
-                "description": "Number of results to return (default: 10)"
-            },
-            "page": {
-                "type": "number",
-                "description": "Page number of results to return (default: 1)"
-            },
-            "location": {
-                "type": "string",
-                "description": "Optional location for search results (e.g., 'SoHo, New York, United States', 'California, United States')"
-            },
-            "site": {
-                "type": "string",
-                "description": "Limit results to specific domain (e.g., 'github.com', 'wikipedia.org')"
-            },
-            "related": {
-                "type": "string",
-                "description": "Find similar websites (e.g., 'github.com', 'stackoverflow.com')"
+                "description": "Número de resultados a retornar (padrão: 10)",
+                "type": "number"
             },
             "tbs": {
-                "type": "string",
-                "description": "Time-based search filter ('qdr:h' for past hour, 'qdr:d' for past day, 'qdr:w' for past week, 'qdr:m' for past month, 'qdr:y' for past year)"
+                "description": "Filtro de busca baseado em tempo ('qdr:h' para última hora, 'qdr:d' para último dia, 'qdr:w' para última semana, 'qdr:m' para último mês, 'qdr:y' para último ano)",
+                "type": "string"
             },
-            "intitle": {
-                "type": "string",
-                "description": "Search for pages with word in title (e.g., 'review', 'how to')"
-            },
-            "inurl": {
-                "type": "string",
-                "description": "Search for pages with word in URL (e.g., 'download', 'tutorial')"
-            },
-            "filetype": {
-                "type": "string",
-                "description": "Limit to specific file types (e.g., 'pdf', 'doc', 'xls')"
-            },
-            "or": {
-                "type": "string",
-                "description": "Alternative terms as comma-separated string (e.g., 'tutorial,guide,course', 'documentation,manual')"
-            },
-            "exclude": {
-                "type": "string",
-                "description": "Terms to exclude from search results as comma-separated string (e.g., 'spam,ads', 'beginner,basic')"
-            },
-            "exact": {
-                "type": "string",
-                "description": "Exact phrase match (e.g., 'machine learning', 'quantum computing')"
-            },
-            "cache": {
-                "type": "string", 
-                "description": "View Google's cached version of a specific URL (e.g., 'example.com/page')"
-            },
-            "before": {
-                "type": "string",
-                "description": "Date before in YYYY-MM-DD format (e.g., '2024-01-01')"
-            },
-            "after": {
-                "type": "string",
-                "description": "Date after in YYYY-MM-DD format (e.g., '2023-01-01')"
+            "page": {
+                "description": "Número da página de resultados a retornar (padrão: 1)",
+                "type": "number"
             },
             "autocorrect": {
-                "type": "boolean",
-                "description": "Whether to autocorrect spelling in query"
+                "description": "Se deve corrigir automaticamente a ortografia na consulta",
+                "type": "boolean"
+            },
+            # Operadores avançados de busca
+            "site": {
+                "description": "Limitar resultados a domínio específico (ex: 'github.com', 'wikipedia.org')",
+                "type": "string"
+            },
+            "filetype": {
+                "description": "Limitar a tipos específicos de arquivo (ex: 'pdf', 'doc', 'xls')",
+                "type": "string"
+            },
+            "inurl": {
+                "description": "Buscar páginas com palavra na URL (ex: 'download', 'tutorial')",
+                "type": "string"
+            },
+            "intitle": {
+                "description": "Buscar páginas com palavra no título (ex: 'avaliação', 'como fazer')",
+                "type": "string"
+            },
+            "related": {
+                "description": "Encontrar sites similares (ex: 'github.com', 'stackoverflow.com')",
+                "type": "string"
+            },
+            "cache": {
+                "description": "Ver versão em cache do Google de uma URL específica (ex: 'example.com/page')",
+                "type": "string"
+            },
+            "before": {
+                "description": "Data antes no formato AAAA-MM-DD (ex: '2024-01-01')",
+                "type": "string"
+            },
+            "after": {
+                "description": "Data depois no formato AAAA-MM-DD (ex: '2023-01-01')",
+                "type": "string"
+            },
+            "exact": {
+                "description": "Correspondência exata de frase (ex: 'aprendizado de máquina', 'computação quântica')",
+                "type": "string"
+            },
+            "exclude": {
+                "description": "Termos a excluir dos resultados de busca como string separada por vírgula (ex: 'spam,anúncios', 'iniciante,básico')",
+                "type": "string"
+            },
+            "or": {
+                "description": "Termos alternativos como string separada por vírgula (ex: 'tutorial,guia,curso', 'documentação,manual')",
+                "type": "string"
             }
-        },
-        "required": ["q", "gl", "hl"]
+        }
     },
     "scrape": {
-        "description": "Tool to scrape a webpage and retrieve the text and, optionally, the markdown content. It will retrieve also the JSON-LD metadata and the head metadata.",
+        "description": "Ferramenta para extrair o conteúdo de uma página web e recuperar o texto e, opcionalmente, o conteúdo em markdown. Também recupera os metadados JSON-LD e os metadados do cabeçalho.",
         "parameters": {
             "url": {
-                "description": "The URL of the webpage to scrape.",
+                "description": "A URL da página web para extrair",
                 "type": "string"
             },
             "includeMarkdown": {
-                "description": "Whether to include markdown content.",
+                "description": "Se deve incluir conteúdo em markdown",
                 "type": "boolean",
                 "default": False
             }
-        },
-        "required": ["url"]
-    },
-    "image_search": {
-        "description": "Tool to search for images via Serper API and retrieve results including thumbnails and source information.",
-        "parameters": {
-            "q": {
-                "type": "string",
-                "description": "Search query string for image search (e.g., 'sunset over mountains', 'cats playing')"
-            },
-            "gl": {
-                "type": "string",
-                "description": "Optional region code for image results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')"
-            },
-            "hl": {
-                "type": "string",
-                "description": "Optional language code for image results in ISO 639-1 format (e.g., 'en', 'es', 'fr')"
-            },
-            "num": {
-                "type": "number",
-                "description": "Number of image results to return (default: 10)"
-            },
-            "location": {
-                "type": "string",
-                "description": "Optional location for image results (e.g., 'New York, United States', 'Paris, France')"
-            }
-        },
-        "required": ["q"]
+        }
     },
     "_health": {
-        "description": "Health check endpoint",
+        "description": "Endpoint de verificação de saúde",
         "parameters": {
             "random_string": {
-                "description": "Dummy parameter for no-parameter tools",
+                "description": "Parâmetro fictício para ferramentas sem parâmetros",
                 "type": "string"
             }
-        },
-        "required": ["random_string"]
+        }
     },
     "analyze_serp": {
-        "description": "Analyze a SERP (Search Engine Results Page) for a given query",
+        "description": "Analisar uma SERP (Página de Resultados de Busca) para uma consulta específica",
         "parameters": {
             "query": {
+                "description": "Consulta de busca a ser analisada",
                 "type": "string"
             },
             "gl": {
+                "description": "Código de região para resultados da busca",
                 "type": "string",
                 "default": "us"
             },
             "hl": {
+                "description": "Código de idioma para resultados da busca",
                 "type": "string",
                 "default": "en"
             },
             "google_domain": {
+                "description": "Domínio do Google a ser usado para a busca",
                 "type": "string",
                 "default": "google.com"
             },
             "num": {
+                "description": "Número de resultados a analisar",
                 "type": "number",
-                "minimum": 1,
-                "maximum": 100,
                 "default": 10
             },
             "device": {
+                "description": "Tipo de dispositivo para emular (desktop ou mobile)",
                 "type": "string",
                 "enum": ["desktop", "mobile"],
                 "default": "desktop"
             },
             "location": {
+                "description": "Localização específica para resultados localizados",
                 "type": "string"
             },
             "safe": {
+                "description": "Modo de pesquisa segura (ativo ou desativado)",
                 "type": "string",
                 "enum": ["active", "off"]
             }
-        },
-        "required": ["query"]
+        }
     },
     "research_keywords": {
-        "description": "Research keywords related to a given topic or seed keyword",
+        "description": "Pesquisar palavras-chave relacionadas a um tópico ou palavra-chave inicial",
         "parameters": {
             "keyword": {
+                "description": "Palavra-chave semente para pesquisa",
                 "type": "string"
             },
             "language": {
+                "description": "Idioma para resultados de palavras-chave",
                 "type": "string"
             },
             "location": {
+                "description": "Localização para resultados de palavras-chave",
                 "type": "string"
             },
             "include_questions": {
+                "description": "Incluir perguntas relacionadas nos resultados",
                 "type": "boolean",
                 "default": False
             },
             "include_related": {
+                "description": "Incluir termos relacionados nos resultados",
                 "type": "boolean",
                 "default": False
             },
             "include_suggestions": {
+                "description": "Incluir sugestões de palavras-chave nos resultados",
                 "type": "boolean",
                 "default": False
             }
-        },
-        "required": ["keyword"]
+        }
     },
     "analyze_competitors": {
-        "description": "Analyze competitors for a given keyword or domain",
+        "description": "Analisar concorrentes para uma palavra-chave ou domínio específico",
         "parameters": {
             "domain": {
+                "description": "Domínio para analisar concorrentes",
                 "type": "string"
             },
             "keyword": {
+                "description": "Palavra-chave opcional para focar a análise",
                 "type": "string"
             },
             "include_features": {
+                "description": "Incluir recursos detalhados dos concorrentes",
                 "type": "boolean"
             },
             "num_results": {
-                "type": "number",
-                "minimum": 1,
-                "maximum": 100
+                "description": "Número de concorrentes a analisar",
+                "type": "number"
             }
-        },
-        "required": ["domain"]
+        }
     },
     "autocomplete": {
         "description": "Get search autocomplete suggestions for multiple queries at once",

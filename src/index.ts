@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * MCP server implementation that provides web search capabilities via Serper API.
+ * Implementação do servidor MCP que fornece recursos de busca na web via API Serper.
  */
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
@@ -16,21 +16,21 @@ import { SerperClient } from "./services/serper-client.js";
 import { SerperSearchTools } from "./tools/search-tool.js";
 import { SerperPrompts } from "./prompts/index.js";
 
-// Initialize Serper client with API key from environment
+// Inicializa o cliente Serper com a chave de API do ambiente
 const serperApiKey = process.env.SERPER_API_KEY;
 if (!serperApiKey) {
-  throw new Error("SERPER_API_KEY environment variable is required");
+  throw new Error("Variável de ambiente SERPER_API_KEY é obrigatória");
 }
 
-// Create Serper client, search tool, and prompts
+// Cria cliente Serper, ferramenta de busca e prompts
 const serperClient = new SerperClient(serperApiKey);
 const searchTools = new SerperSearchTools(serperClient);
 const prompts = new SerperPrompts(searchTools);
 
-// Create MCP server
+// Cria servidor MCP
 const server = new Server(
   {
-    name: "Serper MCP Server",
+    name: "Servidor MCP Serper",
     version: "0.1.0",
   },
   {
@@ -42,107 +42,107 @@ const server = new Server(
 );
 
 /**
- * Handler that lists available tools.
- * Exposes a single "webSearch" tool for performing web searches.
+ * Manipulador que lista as ferramentas disponíveis.
+ * Expõe várias ferramentas para realizar buscas e análises na web.
  */
 server.setRequestHandler(ListToolsRequestSchema, async () => {
-  // Define input schema for search tool
+  // Define o esquema de entrada para a ferramenta de busca
   const searchInputSchema = {
     type: "object",
     properties: {
       q: {
         type: "string",
-        description: "Search query string (e.g., 'artificial intelligence', 'climate change solutions')"
+        description: "String de consulta de busca (ex: 'inteligência artificial', 'soluções para mudanças climáticas')"
       },
       gl: {
         type: "string",
-        description: "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')"
+        description: "Código de região opcional para resultados da busca no formato ISO 3166-1 alpha-2 (ex: 'us', 'br', 'pt')"
       },
       hl: {
         type: "string",
-        description: "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')"
+        description: "Código de idioma opcional para resultados da busca no formato ISO 639-1 (ex: 'en', 'pt', 'es')"
       },
       location: {
         type: "string",
-        description: "Optional location for search results (e.g., 'SoHo, New York, United States', 'California, United States')"
+        description: "Localização opcional para resultados da busca (ex: 'São Paulo, Brasil', 'Rio de Janeiro, Brasil')"
       },
       num: {
         type: "number",
-        description: "Number of results to return (default: 10)"
+        description: "Número de resultados a retornar (padrão: 10)"
       },
       tbs: {
         type: "string",
-        description: "Time-based search filter ('qdr:h' for past hour, 'qdr:d' for past day, 'qdr:w' for past week, 'qdr:m' for past month, 'qdr:y' for past year)"
+        description: "Filtro de busca baseado em tempo ('qdr:h' para última hora, 'qdr:d' para último dia, 'qdr:w' para última semana, 'qdr:m' para último mês, 'qdr:y' para último ano)"
       },
       page: {
         type: "number",
-        description: "Page number of results to return (default: 1)"
+        description: "Número da página de resultados a retornar (padrão: 1)"
       },
       autocorrect: {
         type: "boolean",
-        description: "Whether to autocorrect spelling in query"
+        description: "Se deve corrigir automaticamente a ortografia na consulta"
       },
-      // Advanced search operators
+      // Operadores avançados de busca
       site: {
         type: "string",
-        description: "Limit results to specific domain (e.g., 'github.com', 'wikipedia.org')"
+        description: "Limitar resultados a domínio específico (ex: 'github.com', 'wikipedia.org')"
       },
       filetype: {
         type: "string",
-        description: "Limit to specific file types (e.g., 'pdf', 'doc', 'xls')"
+        description: "Limitar a tipos específicos de arquivo (ex: 'pdf', 'doc', 'xls')"
       },
       inurl: {
         type: "string",
-        description: "Search for pages with word in URL (e.g., 'download', 'tutorial')"
+        description: "Buscar páginas com palavra na URL (ex: 'download', 'tutorial')"
       },
       intitle: {
         type: "string",
-        description: "Search for pages with word in title (e.g., 'review', 'how to')"
+        description: "Buscar páginas com palavra no título (ex: 'avaliação', 'como fazer')"
       },
       related: {
         type: "string",
-        description: "Find similar websites (e.g., 'github.com', 'stackoverflow.com')"
+        description: "Encontrar sites similares (ex: 'github.com', 'stackoverflow.com')"
       },
       cache: {
         type: "string",
-        description: "View Google's cached version of a specific URL (e.g., 'example.com/page')"
+        description: "Ver versão em cache do Google de uma URL específica (ex: 'example.com/page')"
       },
       before: {
         type: "string",
-        description: "Date before in YYYY-MM-DD format (e.g., '2024-01-01')"
+        description: "Data antes no formato AAAA-MM-DD (ex: '2024-01-01')"
       },
       after: {
         type: "string",
-        description: "Date after in YYYY-MM-DD format (e.g., '2023-01-01')"
+        description: "Data depois no formato AAAA-MM-DD (ex: '2023-01-01')"
       },
       exact: {
         type: "string",
-        description: "Exact phrase match (e.g., 'machine learning', 'quantum computing')"
+        description: "Correspondência exata de frase (ex: 'aprendizado de máquina', 'computação quântica')"
       },
       exclude: {
         type: "string",
-        description: "Terms to exclude from search results as comma-separated string (e.g., 'spam,ads', 'beginner,basic')"
+        description: "Termos a excluir dos resultados de busca como string separada por vírgula (ex: 'spam,anúncios', 'iniciante,básico')"
       },
       or: {
         type: "string",
-        description: "Alternative terms as comma-separated string (e.g., 'tutorial,guide,course', 'documentation,manual')"
+        description: "Termos alternativos como string separada por vírgula (ex: 'tutorial,guia,curso', 'documentação,manual')"
       }
     },
     required: ["q", "gl", "hl"],
   };
 
-  // Return list of tools with input schemas
+  // Retorna lista de ferramentas com esquemas de entrada
   return {
     tools: [
       {
         name: "_health",
-        description: "Health check endpoint",
+        description: "Endpoint de verificação de saúde",
         inputSchema: {
           type: "object",
           properties: {
             random_string: {
               type: "string",
-              description: "Dummy parameter for no-parameter tools"
+              description: "Parâmetro fictício para ferramentas sem parâmetros"
             }
           },
           required: ["random_string"]
@@ -150,7 +150,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: "analyze_serp",
-        description: "Analyze a SERP (Search Engine Results Page) for a given query",
+        description: "Analisar uma SERP (Página de Resultados de Busca) para uma consulta específica",
         inputSchema: {
           $schema: "http://json-schema.org/draft-07/schema#",
           type: "object",
@@ -195,7 +195,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: "research_keywords",
-        description: "Research keywords related to a given topic or seed keyword",
+        description: "Pesquisar palavras-chave relacionadas a um tópico ou palavra-chave inicial",
         inputSchema: {
           $schema: "http://json-schema.org/draft-07/schema#",
           type: "object",
@@ -228,7 +228,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: "analyze_competitors",
-        description: "Analyze competitors for a given keyword or domain",
+        description: "Analisar concorrentes para uma palavra-chave ou domínio específico",
         inputSchema: {
           $schema: "http://json-schema.org/draft-07/schema#",
           type: "object",
@@ -255,23 +255,23 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: "google_search",
         description:
-          "Tool to perform web searches via Serper API and retrieve rich results. It is able to retrieve organic search results, people also ask, related searches, and knowledge graph.",
+          "Ferramenta para realizar buscas na web via API Serper e recuperar resultados completos. Capaz de recuperar resultados orgânicos de busca, pessoas também perguntam, buscas relacionadas e gráfico de conhecimento.",
         inputSchema: searchInputSchema,
       },
       {
         name: "scrape",
         description:
-          "Tool to scrape a webpage and retrieve the text and, optionally, the markdown content. It will retrieve also the JSON-LD metadata and the head metadata.",
+          "Ferramenta para extrair o conteúdo de uma página web e recuperar o texto e, opcionalmente, o conteúdo em markdown. Também recupera os metadados JSON-LD e os metadados do cabeçalho.",
         inputSchema: {
           type: "object",
           properties: {
             url: {
               type: "string",
-              description: "The URL of the webpage to scrape.",
+              description: "A URL da página web para extrair.",
             },
             includeMarkdown: {
               type: "boolean",
-              description: "Whether to include markdown content.",
+              description: "Se deve incluir conteúdo em markdown.",
               default: false,
             },
           },
@@ -283,8 +283,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 });
 
 /**
- * Handler for the webSearch tool.
- * Performs a web search using Serper API and returns results.
+ * Manipulador para as ferramentas de busca e análise.
+ * Realiza buscas e análises usando a API Serper e retorna os resultados.
  */
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   switch (request.params.name) {
@@ -295,12 +295,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: "text",
-              text: "Server is healthy"
+              text: "Servidor está saudável"
             },
           ],
         };
       } catch (error) {
-        throw new Error(`Health check failed: ${error}`);
+        throw new Error(`Verificação de saúde falhou: ${error}`);
       }
     }
     
@@ -317,7 +317,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       } = request.params.arguments || {};
       
       if (!query) {
-        throw new Error("Query is required for SERP analysis");
+        throw new Error("Consulta é obrigatória para análise de SERP");
       }
       
       try {
@@ -341,7 +341,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           ],
         };
       } catch (error) {
-        throw new Error(`SERP analysis failed: ${error}`);
+        throw new Error(`Análise de SERP falhou: ${error}`);
       }
     }
     
@@ -356,7 +356,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       } = request.params.arguments || {};
       
       if (!keyword) {
-        throw new Error("Keyword is required for keyword research");
+        throw new Error("Palavra-chave é obrigatória para pesquisa de palavras-chave");
       }
       
       try {
@@ -378,7 +378,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           ],
         };
       } catch (error) {
-        throw new Error(`Keyword research failed: ${error}`);
+        throw new Error(`Pesquisa de palavras-chave falhou: ${error}`);
       }
     }
     
@@ -391,7 +391,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       } = request.params.arguments || {};
       
       if (!domain) {
-        throw new Error("Domain is required for competitor analysis");
+        throw new Error("Domínio é obrigatório para análise de concorrentes");
       }
       
       try {
@@ -411,7 +411,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           ],
         };
       } catch (error) {
-        throw new Error(`Competitor analysis failed: ${error}`);
+        throw new Error(`Análise de concorrentes falhou: ${error}`);
       }
     }
 
@@ -425,7 +425,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         tbs,
         page,
         autocorrect,
-        // Advanced search parameters
+        // Parâmetros avançados de busca
         site,
         filetype,
         inurl,
@@ -441,7 +441,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
       if (!q || !gl || !hl) {
         throw new Error(
-          "Search query and region code and language are required"
+          "Consulta de busca, código de região e idioma são obrigatórios"
         );
       }
 
@@ -455,7 +455,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           tbs: tbs as "qdr:h" | "qdr:d" | "qdr:w" | "qdr:m" | "qdr:y" | undefined,
           page: page as number | undefined,
           autocorrect: autocorrect as boolean | undefined,
-          // Advanced search parameters
+          // Parâmetros avançados de busca
           site: site as string | undefined,
           filetype: filetype as string | undefined,
           inurl: inurl as string | undefined,
@@ -477,7 +477,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           ],
         };
       } catch (error) {
-        throw new Error(`Search failed: ${error}`);
+        throw new Error(`Busca falhou: ${error}`);
       }
     }
 
@@ -497,22 +497,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
 
     default:
-      throw new Error("Unknown tool");
+      throw new Error("Ferramenta desconhecida");
   }
 });
 
-// Handle prompts/list requests
+// Trata requisições prompts/list
 server.setRequestHandler(ListPromptsRequestSchema, async () => {
   return prompts.listPrompts();
 });
 
-// Handle prompts/get requests
+// Trata requisições prompts/get
 server.setRequestHandler(GetPromptRequestSchema, async (request) => {
   return prompts.getPrompt(request.params.name, request.params.arguments || {});
 });
 
 /**
- * Start the server using stdio transport.
+ * Inicia o servidor usando transporte stdio.
  */
 async function main() {
   const transport = new StdioServerTransport();
@@ -520,6 +520,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error("Server error:", error);
+  console.error("Erro do servidor:", error);
   process.exit(1);
 });
