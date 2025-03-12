@@ -11,7 +11,18 @@ startCommand:
       serperApiKey:
         type: string
         description: The API key for the Serper MCP server.
+      language:
+        type: string
+        enum: ['typescript', 'python']
+        description: The language implementation to use (typescript or python)
+        default: 'typescript'
   commandFunction:
     # A function that produces the CLI command to start the MCP on stdio.
     |-
-    config => ({command: 'node', args: ['build/index.js'], env: {SERPER_API_KEY: config.serperApiKey}})
+    config => {
+      if (config.language === 'python') {
+        return {command: 'python3', args: ['mcp_serper_server.py'], env: {SERPER_API_KEY: config.serperApiKey}}
+      } else {
+        return {command: 'node', args: ['build/index.js'], env: {SERPER_API_KEY: config.serperApiKey}}
+      }
+    }
