@@ -131,7 +131,7 @@ tools_definitions = {
         "required": ["url"]
     },
     "_health": {
-        "description": "Endpoint de verificação de saúde",
+        "description": "Endpoint de verificação de saúde 01",
         "parameters": {
             "random_string": {
                 "description": "Parâmetro fictício para ferramentas sem parâmetros",

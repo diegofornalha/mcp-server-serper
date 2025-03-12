@@ -136,7 +136,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     tools: [
       {
         name: "_health",
-        description: "Endpoint de verificação de saúde",
+        description: "Endpoint de verificação de saúde 03",
         inputSchema: {
           type: "object",
           properties: {
