@@ -1001,7 +1001,7 @@ tools_definitions = {
         }
     },
     "_health": {
-        "description": "Endpoint de verificação de saúde 02",
+        "description": "Endpoint de verificação de saúde",
         "parameters": {
             "random_string": {
                 "description": "Parâmetro fictício para ferramentas sem parâmetros",
@@ -1107,272 +1107,281 @@ tools_definitions = {
         }
     },
     "autocomplete": {
-        "description": "Get search autocomplete suggestions for multiple queries at once",
+        "description": "Obter sugestões de autocompletar para múltiplas consultas de uma vez",
         "parameters": {
             "queries": {
-                "description": "List of search queries to get autocomplete suggestions for",
+                "description": "Lista de consultas de busca para obter sugestões de autocompletar",
                 "type": "array",
                 "items": {
                     "type": "string"
                 }
             },
             "location": {
-                "description": "Location for search results (e.g., 'Brazil', 'United States')",
+                "description": "Localização para resultados de busca (ex: 'Brasil', 'Estados Unidos')",
                 "type": "string"
             },
             "gl": {
-                "description": "Country code (e.g., 'br', 'us')",
+                "description": "Código de país (ex: 'br', 'us')",
                 "type": "string"
             },
             "hl": {
-                "description": "Language code (e.g., 'pt-br', 'en')",
+                "description": "Código de idioma (ex: 'pt-br', 'en')",
                 "type": "string"
             }
         },
         "required": ["queries"]
     },
-    "serper_maps_search": {
-        "description": "Tool to search for maps and locations using the Serper API.",
+    "maps_search": {
+        "description": "Ferramenta para buscar mapas e locais usando a API Serper.",
         "parameters": {
             "q": {
-                "description": "Search query string for maps (e.g., 'restaurants in New York', 'parks in London')",
+                "description": "String de consulta para mapas (ex: 'restaurantes em São Paulo', 'parques em Lisboa')",
                 "type": "string"
             },
             "gl": {
-                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "description": "Código de região opcional para resultados de mapas no formato ISO 3166-1 alpha-2 (ex: 'us', 'br', 'pt')",
                 "type": "string"
             },
             "hl": {
-                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "description": "Código de idioma opcional para resultados de mapas no formato ISO 639-1 (ex: 'en', 'pt', 'es')",
                 "type": "string"
             },
             "location": {
-                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "description": "Localização opcional para resultados de mapas (ex: 'São Paulo, SP', 'Lisboa, Portugal')",
                 "type": "string"
             },
             "num": {
-                "description": "Number of results to return (default: 10)",
+                "description": "Número de resultados de mapas a retornar (padrão: 10)",
                 "type": "number"
             }
-        }
+        },
+        "required": ["q"]
     },
-    "serper_reviews_search": {
-        "description": "Tool to search for reviews using the Serper API.",
+    "reviews_search": {
+        "description": "Ferramenta para buscar avaliações usando a API Serper.",
         "parameters": {
             "q": {
-                "description": "Search query string for reviews (e.g., 'iPhone 13 reviews', 'hotel reviews in Paris')",
+                "description": "String de consulta para avaliações (ex: 'avaliações iPhone 13', 'avaliações de hotéis em Paris')",
                 "type": "string"
             },
             "gl": {
-                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "description": "Código de região opcional para resultados de avaliações no formato ISO 3166-1 alpha-2 (ex: 'us', 'br', 'pt')",
                 "type": "string"
             },
             "hl": {
-                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "description": "Código de idioma opcional para resultados de avaliações no formato ISO 639-1 (ex: 'en', 'pt', 'es')",
                 "type": "string"
             },
             "location": {
-                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "description": "Localização opcional para resultados de avaliações (ex: 'São Paulo, SP', 'Lisboa, Portugal')",
                 "type": "string"
             },
             "num": {
-                "description": "Number of results to return (default: 10)",
+                "description": "Número de avaliações a retornar (padrão: 10)",
                 "type": "number"
             }
-        }
+        },
+        "required": ["q"]
     },
-    "serper_shopping_search": {
-        "description": "Tool to search for products and shopping information using the Serper API.",
+    "shopping_search": {
+        "description": "Ferramenta para buscar produtos e informações de compras usando a API Serper.",
         "parameters": {
             "q": {
-                "description": "Search query string for products (e.g., 'best smartphones 2024', 'running shoes')",
+                "description": "String de consulta para produtos (ex: 'melhores smartphones 2024', 'tênis de corrida')",
                 "type": "string"
             },
             "gl": {
-                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "description": "Código de região opcional para resultados de produtos no formato ISO 3166-1 alpha-2 (ex: 'us', 'br', 'pt')",
                 "type": "string"
             },
             "hl": {
-                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "description": "Código de idioma opcional para resultados de produtos no formato ISO 639-1 (ex: 'en', 'pt', 'es')",
                 "type": "string"
             },
             "location": {
-                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "description": "Localização opcional para resultados de produtos (ex: 'São Paulo, SP', 'Lisboa, Portugal')",
                 "type": "string"
             },
             "num": {
-                "description": "Number of results to return (default: 10)",
+                "description": "Número de produtos a retornar (padrão: 10)",
                 "type": "number"
             }
-        }
+        },
+        "required": ["q"]
     },
-    "serper_lens_search": {
-        "description": "Tool to search for information about an image using Google Lens via the Serper API.",
+    "lens_search": {
+        "description": "Ferramenta para buscar informações sobre uma imagem usando o Google Lens via API Serper.",
         "parameters": {
             "image_url": {
-                "description": "URL of the image to search with (must be a publicly accessible image URL)",
+                "description": "URL da imagem para buscar (deve ser uma URL de imagem publicamente acessível)",
                 "type": "string"
             },
             "gl": {
-                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "description": "Código de região opcional para resultados no formato ISO 3166-1 alpha-2 (ex: 'us', 'br', 'pt')",
                 "type": "string"
             },
             "hl": {
-                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "description": "Código de idioma opcional para resultados no formato ISO 639-1 (ex: 'en', 'pt', 'es')",
                 "type": "string"
             },
             "location": {
-                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "description": "Localização opcional para resultados (ex: 'São Paulo, SP', 'Lisboa, Portugal')",
                 "type": "string"
             }
-        }
+        },
+        "required": ["image_url"]
     },
-    "serper_scholar_search": {
-        "description": "Tool to search for academic papers and scholarly information using the Serper API.",
+    "scholar_search": {
+        "description": "Ferramenta para buscar artigos acadêmicos e informações escolares usando a API Serper.",
         "parameters": {
             "q": {
-                "description": "Search query string for academic papers (e.g., 'machine learning advances', 'climate change research')",
+                "description": "String de consulta para artigos acadêmicos (ex: 'avanços em aprendizado de máquina', 'pesquisa sobre mudanças climáticas')",
                 "type": "string"
             },
             "gl": {
-                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "description": "Código de região opcional para resultados acadêmicos no formato ISO 3166-1 alpha-2 (ex: 'us', 'br', 'pt')",
                 "type": "string"
             },
             "hl": {
-                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "description": "Código de idioma opcional para resultados acadêmicos no formato ISO 639-1 (ex: 'en', 'pt', 'es')",
                 "type": "string"
             },
             "location": {
-                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "description": "Localização opcional para resultados acadêmicos (ex: 'São Paulo, SP', 'Lisboa, Portugal')",
                 "type": "string"
             },
             "num": {
-                "description": "Number of results to return (default: 10)",
+                "description": "Número de artigos acadêmicos a retornar (padrão: 10)",
                 "type": "number"
             },
             "year_min": {
-                "description": "Minimum publication year to filter results (e.g., 2020)",
+                "description": "Ano mínimo de publicação para filtrar resultados (ex: 2020)",
                 "type": "number"
             },
             "year_max": {
-                "description": "Maximum publication year to filter results (e.g., 2023)",
+                "description": "Ano máximo de publicação para filtrar resultados (ex: 2023)",
                 "type": "number"
             }
-        }
+        },
+        "required": ["q"]
     },
-    "serper_patents_search": {
-        "description": "Tool to search for patents information using the Serper API.",
+    "patents_search": {
+        "description": "Ferramenta para buscar informações sobre patentes usando a API Serper.",
         "parameters": {
             "q": {
-                "description": "Search query string for patents (e.g., 'artificial intelligence patents', 'electric vehicle charging')",
+                "description": "String de consulta para patentes (ex: 'patentes de inteligência artificial', 'carregamento de veículos elétricos')",
                 "type": "string"
             },
             "gl": {
-                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "description": "Código de região opcional para resultados de patentes no formato ISO 3166-1 alpha-2 (ex: 'us', 'br', 'pt')",
                 "type": "string"
             },
             "hl": {
-                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "description": "Código de idioma opcional para resultados de patentes no formato ISO 639-1 (ex: 'en', 'pt', 'es')",
                 "type": "string"
             },
             "location": {
-                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "description": "Localização opcional para resultados de patentes (ex: 'São Paulo, SP', 'Lisboa, Portugal')",
                 "type": "string"
             },
             "num": {
-                "description": "Number of results to return (default: 10)",
+                "description": "Número de patentes a retornar (padrão: 10)",
                 "type": "number"
             },
             "patent_office": {
-                "description": "Patent office to search in (e.g., 'USPTO', 'EPO', 'WIPO')",
+                "description": "Escritório de patentes para pesquisar (ex: 'USPTO', 'EPO', 'WIPO')",
                 "type": "string"
             }
-        }
+        },
+        "required": ["q"]
     },
-    "serper_webpage_search": {
-        "description": "Tool to get detailed information about a specific webpage using the Serper API.",
+    "webpage_search": {
+        "description": "Ferramenta para obter informações detalhadas sobre uma página web específica usando a API Serper.",
         "parameters": {
             "url": {
-                "description": "URL of the webpage to analyze (must be a publicly accessible URL)",
+                "description": "URL da página web para analisar (deve ser uma URL publicamente acessível)",
                 "type": "string"
             },
             "extract_content": {
-                "description": "Whether to extract the main content from the webpage (default: true)",
+                "description": "Se deve extrair o conteúdo principal da página web (padrão: true)",
                 "type": "boolean"
             },
             "extract_metadata": {
-                "description": "Whether to extract metadata from the webpage (default: true)",
+                "description": "Se deve extrair metadados da página web (padrão: true)",
                 "type": "boolean"
             }
-        }
+        },
+        "required": ["url"]
     },
-    "serper_news_search": {
-        "description": "Tool to search for news articles using the Serper API.",
+    "news_search": {
+        "description": "Ferramenta para buscar artigos de notícias usando a API Serper.",
         "parameters": {
             "q": {
-                "description": "Search query string for news articles (e.g., 'latest tech news', 'covid-19 updates')",
+                "description": "String de consulta para artigos de notícias (ex: 'últimas notícias de tecnologia', 'atualizações covid-19')",
                 "type": "string"
             },
             "gl": {
-                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "description": "Código de região opcional para resultados de notícias no formato ISO 3166-1 alpha-2 (ex: 'us', 'br', 'pt')",
                 "type": "string"
             },
             "hl": {
-                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "description": "Código de idioma opcional para resultados de notícias no formato ISO 639-1 (ex: 'en', 'pt', 'es')",
                 "type": "string"
             },
             "location": {
-                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "description": "Localização opcional para resultados de notícias (ex: 'São Paulo, SP', 'Lisboa, Portugal')",
                 "type": "string"
             },
             "num": {
-                "description": "Number of results to return (default: 10)",
+                "description": "Número de artigos de notícias a retornar (padrão: 10)",
                 "type": "number"
             },
             "timerange": {
-                "description": "Time range for news articles (e.g., 'd' for day, 'w' for week, 'm' for month)",
+                "description": "Intervalo de tempo para artigos de notícias (ex: 'd' para dia, 'w' para semana, 'm' para mês)",
                 "type": "string"
             }
-        }
+        },
+        "required": ["q"]
     },
-    "serper_places_search": {
-        "description": "Tool to search for places and locations using the Serper API.",
+    "places_search": {
+        "description": "Ferramenta para buscar lugares e localizações usando a API Serper.",
         "parameters": {
             "q": {
-                "description": "Search query string for places (e.g., 'restaurants near me', 'parks in San Francisco')",
+                "description": "String de consulta para lugares (ex: 'restaurantes perto de mim', 'parques em São Francisco')",
                 "type": "string"
             },
             "gl": {
-                "description": "Optional region code for search results in ISO 3166-1 alpha-2 format (e.g., 'us', 'gb', 'de')",
+                "description": "Código de região opcional para resultados de lugares no formato ISO 3166-1 alpha-2 (ex: 'us', 'br', 'pt')",
                 "type": "string"
             },
             "hl": {
-                "description": "Optional language code for search results in ISO 639-1 format (e.g., 'en', 'es', 'fr')",
+                "description": "Código de idioma opcional para resultados de lugares no formato ISO 639-1 (ex: 'en', 'pt', 'es')",
                 "type": "string"
             },
             "location": {
-                "description": "Optional location for search results (e.g., 'New York, NY', 'London, UK')",
+                "description": "Localização opcional para resultados de lugares (ex: 'São Paulo, SP', 'Lisboa, Portugal')",
                 "type": "string"
             },
             "num": {
-                "description": "Number of results to return (default: 10)",
+                "description": "Número de lugares a retornar (padrão: 10)",
                 "type": "number"
             }
-        }
+        },
+        "required": ["q"]
     }
 }
 
 # Protocolo MCP por stdio
 def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
-    """Handle incoming MCP messages."""
+    """Trata mensagens MCP recebidas."""
     try:
         method = message.get("method")
         if not method:
-            return {"error": {"message": "No method specified"}}
+            return {"error": {"message": "Nenhum método especificado"}}
 
         message_id = message.get("id")
         
-        # ListTools handler
+        # Manipulador ListTools
         if method == "mcp.ListTools":
             return {
                 "id": message_id,
@@ -1381,7 +1390,7 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                 }
             }
             
-        # CallTool handler
+        # Manipulador CallTool
         elif method == "mcp.CallTool":
             params = message.get("params", {})
             tool_name = params.get("name")
@@ -1400,17 +1409,6 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                 
             elif tool_name == "scrape":
                 result = search_tools.scrape(arguments)
-                return {
-                    "id": message_id,
-                    "result": {
-                        "content": [
-                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
-                        ]
-                    }
-                }
-                
-            elif tool_name == "image_search":
-                result = search_tools.image_search(arguments)
                 return {
                     "id": message_id,
                     "result": {
@@ -1475,7 +1473,29 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                     }
                 }
                 
-            elif tool_name == "serper_maps_search":
+            elif tool_name == "image_search":
+                result = search_tools.image_search(arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "video_search":
+                result = search_tools.video_search(**arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "maps_search":
                 result = search_tools.maps_search(arguments)
                 return {
                     "id": message_id,
@@ -1486,7 +1506,7 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                     }
                 }
                 
-            elif tool_name == "serper_reviews_search":
+            elif tool_name == "reviews_search":
                 result = search_tools.reviews_search(arguments)
                 return {
                     "id": message_id,
@@ -1497,7 +1517,7 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                     }
                 }
                 
-            elif tool_name == "serper_shopping_search":
+            elif tool_name == "shopping_search":
                 result = search_tools.shopping_search(arguments)
                 return {
                     "id": message_id,
@@ -1508,7 +1528,7 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                     }
                 }
                 
-            elif tool_name == "serper_lens_search":
+            elif tool_name == "lens_search":
                 result = search_tools.lens_search(arguments)
                 return {
                     "id": message_id,
@@ -1519,7 +1539,7 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                     }
                 }
                 
-            elif tool_name == "serper_scholar_search":
+            elif tool_name == "scholar_search":
                 result = search_tools.scholar_search(arguments)
                 return {
                     "id": message_id,
@@ -1530,7 +1550,7 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                     }
                 }
                 
-            elif tool_name == "serper_patents_search":
+            elif tool_name == "patents_search":
                 result = search_tools.patents_search(arguments)
                 return {
                     "id": message_id,
@@ -1541,7 +1561,7 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                     }
                 }
                 
-            elif tool_name == "serper_webpage_search":
+            elif tool_name == "webpage_search":
                 result = search_tools.webpage_search(arguments)
                 return {
                     "id": message_id,
@@ -1552,7 +1572,7 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                     }
                 }
                 
-            elif tool_name == "serper_news_search":
+            elif tool_name == "news_search":
                 result = search_tools.news_search(arguments)
                 return {
                     "id": message_id,
@@ -1563,7 +1583,7 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                     }
                 }
                 
-            elif tool_name == "serper_places_search":
+            elif tool_name == "places_search":
                 result = search_tools.places_search(arguments)
                 return {
                     "id": message_id,
@@ -1578,7 +1598,7 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                 return {
                     "id": message_id,
                     "error": {
-                        "message": f"Unknown tool: {tool_name}"
+                        "message": f"Ferramenta desconhecida: {tool_name}"
                     }
                 }
         else:
@@ -1586,16 +1606,16 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
             return {
                 "id": message_id,
                 "error": {
-                    "message": f"Method not implemented: {method}"
+                    "message": f"Método não implementado: {method}"
                 }
             }
             
     except Exception as e:
-        logger.error(f"Error handling message: {e}", exc_info=True)
+        logger.error(f"Erro ao manipular mensagem: {e}", exc_info=True)
         return {
             "id": message.get("id"),
             "error": {
-                "message": f"Internal server error: {str(e)}"
+                "message": f"Erro interno do servidor: {str(e)}"
             }
         }
 
