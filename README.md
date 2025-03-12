@@ -1,5 +1,7 @@
 # MCP Serper - Serviços de Busca Unificados
 
+[![smithery badge](https://smithery.ai/badge/@diegofornalha/mcp-server-serper)](https://smithery.ai/server/@diegofornalha/mcp-server-serper)
+
 Este projeto implementa um servidor MCP (Model Control Protocol) para realizar buscas na web através da API Serper, bem como aplicativos e scripts unificados para testar as funcionalidades de busca.
 
 ## Funcionalidades
@@ -185,10 +187,7 @@ O projeto foi reestruturado seguindo os princípios DRY (Don't Repeat Yourself),
 | Webpage | Análise de páginas web | `mcp__serper_webpage_search` |
 | Autocomplete | Sugestões de autocompletar | `mcp__serper_autocomplete` |
 
-## Contribuindo
+## melhorar
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests com melhorias, correções de bugs ou novas funcionalidades.
+https://serper.dev/playground
 
-## Licença
-
-Este projeto está licenciado sob a licença MIT - veja o arquivo LICENSE para detalhes.
