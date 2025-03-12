@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 """
-Aplicativo Streamlit para busca de notícias usando a API Serper.
-Permite visualizar resultados de notícias com diferentes parâmetros de busca.
+Aplicativo Streamlit para busca de produtos (shopping) usando a API Serper.
+Permite visualizar resultados de produtos com diferentes parâmetros de busca.
 """
 
 import os
@@ -17,8 +17,8 @@ load_dotenv()
 
 # Configurações da página Streamlit
 st.set_page_config(
-    page_title="Busca de Notícias - Serper API",
-    page_icon="📰",
+    page_title="Busca de Produtos - Serper API",
+    page_icon="🛍️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -26,46 +26,64 @@ st.set_page_config(
 # Estilos CSS personalizados
 st.markdown("""
 <style>
-    .news-card {
+    .product-card {
         border: 1px solid #ddd;
         border-radius: 8px;
         padding: 15px;
         margin-bottom: 15px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         background-color: white;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     }
-    .news-title {
+    .product-title {
         color: #1E88E5;
         text-decoration: none;
         font-weight: bold;
-        font-size: 18px;
+        font-size: 16px;
         margin-bottom: 8px;
+        line-height: 1.2;
     }
-    .news-source {
-        color: #616161;
-        font-size: 14px;
-        margin-bottom: 8px;
-    }
-    .news-date {
+    .product-source {
         color: #616161;
         font-size: 13px;
+        margin-bottom: 5px;
+    }
+    .product-price {
+        color: #4CAF50;
+        font-size: 18px;
+        font-weight: bold;
         margin-bottom: 8px;
     }
-    .news-snippet {
-        color: #212121;
-        font-size: 14px;
-        margin-bottom: 10px;
+    .product-delivery {
+        color: #616161;
+        font-size: 12px;
+        margin-bottom: 5px;
     }
-    .news-link {
+    .product-rating {
+        color: #FF9800;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    .product-reviews {
+        color: #616161;
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+    .product-link {
         color: #1976D2;
         font-size: 13px;
         text-decoration: none;
+        margin-top: auto;
     }
-    .news-image {
+    .product-image {
         max-width: 100%;
         height: auto;
         border-radius: 4px;
         margin-bottom: 10px;
+        object-fit: contain;
+        max-height: 180px;
     }
     .header-container {
         background-color: #1976D2;
@@ -81,6 +99,14 @@ st.markdown("""
         margin-bottom: 20px;
         text-align: center;
     }
+    .credits-info {
+        background-color: #fff3cd;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-top: 5px;
+        font-size: 14px;
+        display: inline-block;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -93,10 +119,11 @@ if not SERPER_API_KEY:
     )
     SERPER_API_KEY = ""
 
-# Função para buscar notícias usando a API Serper
-def search_news(query, location="Brazil", gl="br", hl="pt-br", num=10, tbs=None):
+
+# Função para buscar produtos usando a API Serper
+def search_shopping(query, location="Brazil", gl="br", hl="pt-br", num=20, tbs=None):
     """
-    Busca notícias usando a API Serper.
+    Busca produtos (shopping) usando a API Serper.
     
     Args:
         query: Termo de busca
@@ -119,7 +146,8 @@ def search_news(query, location="Brazil", gl="br", hl="pt-br", num=10, tbs=None)
             "location": location,
             "gl": gl,
             "hl": hl,
-            "num": num
+            "num": num,
+            "type": "shopping"
         }
         
         # Adicionar filtro de tempo se especificado
@@ -133,7 +161,7 @@ def search_news(query, location="Brazil", gl="br", hl="pt-br", num=10, tbs=None)
         }
         
         # Fazer a requisição POST
-        conn.request('POST', '/news', json.dumps(payload), headers)
+        conn.request('POST', '/shopping', json.dumps(payload), headers)
         
         # Obter resposta
         res = conn.getresponse()
@@ -153,12 +181,29 @@ def search_news(query, location="Brazil", gl="br", hl="pt-br", num=10, tbs=None)
         # Fechar conexão
         conn.close()
 
+
+# Renderiza as estrelas de avaliação
+def render_stars(rating):
+    """Renderiza as estrelas de avaliação."""
+    if not rating:
+        return ""
+    
+    full_stars = int(rating)
+    half_star = rating - full_stars >= 0.5
+    
+    stars = "★" * full_stars
+    if half_star:
+        stars += "½"
+    
+    return stars
+
+
 # Interface da Barra Lateral
 with st.sidebar:
-    st.header("📰 Configurações da Busca")
+    st.header("🛍️ Configurações da Busca")
     
     # Campo de busca
-    query = st.text_input("Termo de busca", value="inteligência artificial")
+    query = st.text_input("Termo de busca", value="smartphone")
     
     # Seleção de região
     region_options = {
@@ -187,11 +232,11 @@ with st.sidebar:
     selected_time = st.selectbox("Período", options=list(time_options.keys()), index=0)
     
     # Número de resultados
-    num_results = st.slider("Número de resultados", min_value=1, max_value=20, value=10, step=1)
+    num_results = st.slider("Número de resultados", min_value=5, max_value=30, value=20, step=5)
     
     # Botão para realizar a busca
     search_button = st.button(
-        "🔍 Buscar Notícias", 
+        "🔍 Buscar Produtos", 
         type="primary", 
         use_container_width=True
     )
@@ -200,17 +245,17 @@ with st.sidebar:
     st.divider()
     st.markdown("""
     ### Sobre
-    Este aplicativo utiliza a API Serper para buscar notícias 
-    através do Google. A busca retorna notícias recentes 
-    baseadas nos parâmetros configurados.
+    Este aplicativo utiliza a API Serper para buscar produtos 
+    através do Google Shopping. A busca retorna produtos 
+    baseados nos parâmetros configurados.
     
     Desenvolvido como parte do projeto MCP Server Serper.
     """)
 
 # Cabeçalho principal
 st.markdown(
-    "<div class='header-container'><h1>📰 Busca de Notícias - Serper API</h1>"
-    "<p>Busque e visualize as notícias mais recentes com a API Serper</p></div>", 
+    "<div class='header-container'><h1>🛍️ Busca de Produtos - Serper API</h1>"
+    "<p>Busque e visualize produtos com a API Serper integrada ao Google Shopping</p></div>", 
     unsafe_allow_html=True
 )
 
@@ -224,9 +269,9 @@ if search_button or 'last_results' in st.session_state:
         tbs = time_options[selected_time]
         
         # Mostrar spinner durante a busca
-        with st.spinner(f'Buscando notícias sobre "{query}"...'):
-            # Realizar a busca de notícias
-            results = search_news(
+        with st.spinner(f'Buscando produtos relacionados a "{query}"...'):
+            # Realizar a busca de produtos
+            results = search_shopping(
                 query=query,
                 location=region_params["location"],
                 gl=region_params["gl"],
@@ -252,81 +297,119 @@ if search_button or 'last_results' in st.session_state:
     
     # Exibir resultados
     else:
-        # Extrair notícias
-        news_items = results.get("news", [])
+        # Extrair produtos
+        shopping_items = results.get("shopping", [])
         
         # Informações sobre a busca
-        if news_items:
-            st.markdown(
-                f"<div class='results-info'><h3>Encontradas {len(news_items)} "
-                f"notícias sobre \"{query}\"</h3></div>", 
-                unsafe_allow_html=True
+        if shopping_items:
+            # Exibir número de resultados
+            result_info = (
+                f"<div class='results-info'><h3>Encontrados {len(shopping_items)} "
+                f"produtos relacionados a \"{query}\""
             )
+            
+            # Exibir informações de créditos se disponível
+            if "credits" in results:
+                result_info += (
+                    f" <span class='credits-info'>Créditos utilizados: "
+                    f"{results['credits']}</span>"
+                )
+            
+            result_info += "</h3></div>"
+            st.markdown(result_info, unsafe_allow_html=True)
             
             # Exibir parâmetros da busca
             with st.expander("Detalhes da requisição"):
                 st.json(results.get("searchParameters", {}))
             
-            # Criar grade de 2 colunas para exibir as notícias
-            col1, col2 = st.columns(2)
+            # Criar grade de 3 colunas para exibir os produtos
+            cols = st.columns(3)
             
-            # Distribuir notícias entre as colunas
-            for i, news in enumerate(news_items):
+            # Distribuir produtos entre as colunas
+            for i, product in enumerate(shopping_items):
                 # Alternando entre as colunas
-                col = col1 if i % 2 == 0 else col2
+                col = cols[i % 3]
                 
-                # Obter dados da notícia com escape de caracteres HTML
-                title = html.escape(news.get("title", "Sem título"))
-                link = html.escape(news.get("link", "#"))
-                date = html.escape(news.get("date", "Data não disponível"))
-                source = html.escape(news.get("source", "Fonte desconhecida"))
-                snippet = html.escape(news.get("snippet", ""))
-                image_url = html.escape(news.get("imageUrl", ""))
+                # Obter dados do produto
+                title = html.escape(product.get("title", "Sem título"))
+                link = html.escape(product.get("link", "#"))
+                price = html.escape(product.get("price", "Preço não disponível"))
+                source = html.escape(product.get("source", "Fonte desconhecida"))
+                image_url = html.escape(product.get("imageUrl", ""))
+                rating = product.get("rating", 0)
+                rating_count = product.get("ratingCount", 0)
+                delivery = html.escape(product.get("delivery", ""))
+                offers = product.get("offers", "")
                 
-                # Renderizar o card da notícia de forma segura
+                # Gerar estrelas para avaliação
+                stars_html = ""
+                if rating:
+                    full_stars = int(rating)
+                    half_star = rating - full_stars >= 0.5
+                    stars_html = "★" * full_stars
+                    if half_star:
+                        stars_html += "½"
+                
+                # Renderizar o card do produto usando componentes separados
                 with col:
                     with st.container():
                         # Construir HTML de forma mais segura
-                        news_html = "<div class=\"news-card\">"
-                        
-                        # Título e link
-                        news_html += f'<a href="{link}" target="_blank" class="news-title">{title}</a>'
-                        
-                        # Fonte
-                        news_html += f'<div class="news-source">{source}</div>'
-                        
-                        # Data
-                        news_html += f'<div class="news-date">{date}</div>'
+                        product_html = f"""
+                        <div class="product-card">
+                        """
                         
                         # Imagem (se disponível)
                         if image_url:
-                            news_html += f'<img src="{image_url}" class="news-image">'
+                            product_html += f'<img src="{image_url}" class="product-image">'
                         
-                        # Snippet
-                        news_html += f'<div class="news-snippet">{snippet}</div>'
+                        # Título e link
+                        product_html += f'<a href="{link}" target="_blank" class="product-title">{title}</a>'
                         
-                        # Link para ler mais
-                        news_html += f'<a href="{link}" target="_blank" class="news-link">Ler notícia completa →</a>'
+                        # Fonte
+                        product_html += f'<div class="product-source">{source}</div>'
+                        
+                        # Preço
+                        product_html += f'<div class="product-price">{price}</div>'
+                        
+                        # Informações de entrega (se disponível)
+                        if delivery:
+                            product_html += f'<div class="product-delivery">{delivery}</div>'
+                        
+                        # Avaliação com estrelas (se disponível)
+                        if stars_html:
+                            product_html += f'<div class="product-rating">{stars_html}</div>'
+                        
+                        # Número de avaliações (se disponível)
+                        if rating_count:
+                            product_html += f'<div class="product-reviews">{rating_count} avaliações</div>'
+                        
+                        # Ofertas disponíveis (se disponível)
+                        if offers:
+                            product_html += f'<div class="product-reviews">{offers} ofertas disponíveis</div>'
+                        
+                        # Link para o produto
+                        product_html += f'<a href="{link}" target="_blank" class="product-link">Ver produto →</a>'
                         
                         # Fechar div do card
-                        news_html += "</div>"
+                        product_html += "</div>"
                         
                         # Renderizar HTML
-                        st.markdown(news_html, unsafe_allow_html=True)
+                        st.markdown(product_html, unsafe_allow_html=True)
         else:
-            st.info(f"Nenhuma notícia encontrada para '{query}' com os parâmetros selecionados.")
+            st.info(f"Nenhum produto encontrado para '{query}' com os parâmetros selecionados.")
 
 # Mensagem inicial quando nenhuma busca foi realizada
 else:
-    st.info("👈 Configure os parâmetros e clique em 'Buscar Notícias' para começar.")
+    st.info("👈 Configure os parâmetros e clique em 'Buscar Produtos' para começar.")
     
     # Exibir exemplos de termos de busca
     st.markdown("""
     ### Exemplos de termos para busca:
-    - inteligência artificial
-    - ciência de dados
-    - tecnologia quântica
-    - multiagentes em IA
-    - metaverso
-    - criptomoedas
+    - smartphone
+    - notebook
+    - tênis esportivo
+    - fone de ouvido bluetooth
+    - monitor ultrawide
+    - máquina de café
+    - smartwatch
     """) 
