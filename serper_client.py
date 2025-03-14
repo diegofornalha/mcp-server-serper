@@ -245,6 +245,7 @@ class SerperClient:
                 location: Local para resultados de busca (opcional)
                 gl: Código do país (opcional)
                 hl: Código de idioma (opcional)
+                max_suggestions: Número máximo de sugestões por consulta (opcional)
             
         Returns:
             Sugestões de autocompletar para cada consulta
@@ -254,6 +255,7 @@ class SerperClient:
             location = params.get("location", "")
             gl = params.get("gl", "us")
             hl = params.get("hl", "en")
+            max_suggestions = params.get("max_suggestions", None)
             
             if not queries:
                 raise ValueError("No queries provided for autocomplete")
@@ -269,10 +271,21 @@ class SerperClient:
                 if location:
                     query_item["location"] = location
                     
+                # Adiciona o parâmetro max_suggestions se fornecido
+                if max_suggestions is not None:
+                    query_item["max_suggestions"] = max_suggestions
+                    
                 query_list.append(query_item)
                 
             # Faz a requisição para o endpoint de autocompletar
             response = self._make_request("POST", "/autocomplete", query_list)
+            
+            # Filtra as sugestões no lado do cliente se a API não suportar o parâmetro
+            if max_suggestions is not None:
+                for item in response:
+                    if "suggestions" in item and isinstance(item["suggestions"], list):
+                        item["suggestions"] = item["suggestions"][:max_suggestions]
+            
             return {"autocompleteData": response}
         except Exception as e:
             logger.error(f"Error in autocomplete: {e}")
