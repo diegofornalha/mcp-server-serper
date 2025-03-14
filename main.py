@@ -19,8 +19,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger("serper-mcp-server")
 
-from services.serper_client import SerperClient
-from tools.search_tools import SerperSearchTools
+from serper_client import SerperClient
+from mcp_serper_server import SerperSearchTools
 
 # Inicializa cliente Serper com a chave da API do ambiente
 serper_api_key = os.environ.get("SERPER_API_KEY")
@@ -316,6 +316,66 @@ tools_definitions = {
             },
             "location": {
                 "description": "Localização específica para resultados de vídeos (ex: 'São Paulo, Brasil')",
+                "type": "string"
+            }
+        },
+        "required": ["q"]
+    },
+    "youtube_search": {
+        "description": "Ferramenta para buscar exclusivamente vídeos do YouTube usando a API Serper.",
+        "parameters": {
+            "q": {
+                "description": "String de consulta para busca de vídeos do YouTube (ex: 'tutoriais de programação', 'receitas de bolo')",
+                "type": "string"
+            },
+            "gl": {
+                "description": "Código de região opcional para resultados de vídeos (ex: 'us', 'br', 'pt')",
+                "type": "string"
+            },
+            "hl": {
+                "description": "Código de idioma opcional para resultados de vídeos (ex: 'en', 'pt', 'es')",
+                "type": "string"
+            },
+            "num": {
+                "description": "Número de vídeos a retornar (padrão: 10)",
+                "type": "number"
+            },
+            "location": {
+                "description": "Localização específica para resultados de vídeos (ex: 'São Paulo, Brasil')",
+                "type": "string"
+            },
+            "tbs": {
+                "description": "Filtro de tempo (qdr:h, qdr:d, qdr:w, qdr:m, qdr:y)",
+                "type": "string"
+            }
+        },
+        "required": ["q"]
+    },
+    "instagram_search": {
+        "description": "Ferramenta para buscar exclusivamente vídeos do Instagram usando a API Serper.",
+        "parameters": {
+            "q": {
+                "description": "String de consulta para busca de vídeos do Instagram (ex: 'moda', 'culinária', 'viagens')",
+                "type": "string"
+            },
+            "gl": {
+                "description": "Código de região opcional para resultados de vídeos (ex: 'us', 'br', 'pt')",
+                "type": "string"
+            },
+            "hl": {
+                "description": "Código de idioma opcional para resultados de vídeos (ex: 'en', 'pt', 'es')",
+                "type": "string"
+            },
+            "num": {
+                "description": "Número de vídeos a retornar (padrão: 10)",
+                "type": "number"
+            },
+            "location": {
+                "description": "Localização específica para resultados de vídeos (ex: 'São Paulo, Brasil')",
+                "type": "string"
+            },
+            "tbs": {
+                "description": "Filtro de tempo (qdr:h, qdr:d, qdr:w, qdr:m, qdr:y)",
                 "type": "string"
             }
         },
@@ -677,6 +737,28 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                 
             elif tool_name == "video_search":
                 result = search_tools.video_search(**arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "youtube_search":
+                result = search_tools.youtube_search(**arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "instagram_search":
+                result = search_tools.instagram_search(**arguments)
                 return {
                     "id": message_id,
                     "result": {

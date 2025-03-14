@@ -1,0 +1,1 @@
+{"id": "3534bd9a-08fe-4212-a49d-ad9515d6f4c4", "method": "mcp.CallTool", "params": {"name": "youtube_search", "arguments": {"q": "intelig\u00eancia artificial", "gl": "br", "hl": "pt-br", "num": 5, "location": "Brazil"}}}

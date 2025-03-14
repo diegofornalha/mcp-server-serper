@@ -304,6 +304,91 @@ class SerperClient:
             **({"hl": hl} if hl else {}),
             **({"num": num} if num else {})
         })
+        
+    def youtube_search(self, q, location=None, gl=None, hl=None, num=None, tbs=None):
+        """
+        Busca exclusivamente vídeos do YouTube usando a API Serper.
+        
+        Args:
+            q: Termo de busca
+            location: Localização geográfica
+            gl: Código de região do Google
+            hl: Código de idioma
+            num: Número de resultados
+            tbs: Filtro de tempo (opcional)
+            
+        Returns:
+            Resultados da busca filtrados para YouTube
+        """
+        try:
+            # Realizar busca padrão de vídeos
+            payload = {
+                "q": q,
+                **({"location": location} if location else {}),
+                **({"gl": gl} if gl else {}),
+                **({"hl": hl} if hl else {}),
+                **({"num": num} if num else {}),
+                **({"tbs": tbs} if tbs else {})
+            }
+            
+            result = self._make_request("/videos", payload)
+            
+            # Filtrar apenas vídeos do YouTube
+            if "videos" in result:
+                result["videos"] = [v for v in result["videos"] 
+                                   if "youtube.com" in v.get('link', '') or 
+                                      "youtu.be" in v.get('link', '')]
+            
+            # Adicionar metadados adicionais
+            result["platform"] = "YouTube"
+            result["filtered"] = True
+                                      
+            return result
+        except Exception as e:
+            logger.error(f"Error in youtube_search: {e}")
+            raise Exception(f"Failed to search for YouTube videos with '{q}': {e}")
+    
+    def instagram_search(self, q, location=None, gl=None, hl=None, num=None, tbs=None):
+        """
+        Busca exclusivamente vídeos do Instagram usando a API Serper.
+        
+        Args:
+            q: Termo de busca
+            location: Localização geográfica
+            gl: Código de região do Google
+            hl: Código de idioma
+            num: Número de resultados
+            tbs: Filtro de tempo (opcional)
+            
+        Returns:
+            Resultados da busca filtrados para Instagram
+        """
+        try:
+            # Realizar busca padrão de vídeos
+            payload = {
+                "q": q,
+                **({"location": location} if location else {}),
+                **({"gl": gl} if gl else {}),
+                **({"hl": hl} if hl else {}),
+                **({"num": num} if num else {}),
+                **({"tbs": tbs} if tbs else {})
+            }
+            
+            result = self._make_request("/videos", payload)
+            
+            # Filtrar apenas vídeos do Instagram
+            if "videos" in result:
+                result["videos"] = [v for v in result["videos"] 
+                                   if "instagram.com" in v.get('link', '')]
+            
+            # Adicionar metadados adicionais
+            result["platform"] = "Instagram"
+            result["filtered"] = True
+                                      
+            return result
+        except Exception as e:
+            logger.error(f"Error in instagram_search: {e}")
+            raise Exception(f"Failed to search for Instagram videos with '{q}': {e}")
 
     def maps_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -756,6 +841,40 @@ class SerperSearchTools:
     def video_search(self, query, location=None, gl=None, hl=None, num=None):
         """Search for videos using the Serper API."""
         return self.serper_client.video_search(query, location, gl, hl, num)
+
+    def youtube_search(self, q, location=None, gl=None, hl=None, num=None, tbs=None):
+        """
+        Busca exclusivamente vídeos do YouTube usando a API Serper.
+        
+        Args:
+            q: Termo de busca
+            location: Localização geográfica
+            gl: Código de região do Google
+            hl: Código de idioma
+            num: Número de resultados
+            tbs: Filtro de tempo (opcional)
+            
+        Returns:
+            Resultados da busca filtrados para YouTube
+        """
+        return self.serper_client.youtube_search(q, location, gl, hl, num, tbs)
+    
+    def instagram_search(self, q, location=None, gl=None, hl=None, num=None, tbs=None):
+        """
+        Busca exclusivamente vídeos do Instagram usando a API Serper.
+        
+        Args:
+            q: Termo de busca
+            location: Localização geográfica
+            gl: Código de região do Google
+            hl: Código de idioma
+            num: Número de resultados
+            tbs: Filtro de tempo (opcional)
+            
+        Returns:
+            Resultados da busca filtrados para Instagram
+        """
+        return self.serper_client.instagram_search(q, location, gl, hl, num, tbs)
 
     def maps_search(self, params: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -1368,6 +1487,66 @@ tools_definitions = {
             }
         },
         "required": ["q"]
+    },
+    "youtube_search": {
+        "description": "Ferramenta para buscar vídeos especificamente do YouTube usando a API Serper.",
+        "parameters": {
+            "q": {
+                "description": "String de consulta para vídeos do YouTube (ex: 'tutoriais de programação', 'músicas de relaxamento')",
+                "type": "string"
+            },
+            "gl": {
+                "description": "Código de região opcional para resultados do YouTube no formato ISO 3166-1 alpha-2 (ex: 'us', 'br', 'pt')",
+                "type": "string"
+            },
+            "hl": {
+                "description": "Código de idioma opcional para resultados do YouTube no formato ISO 639-1 (ex: 'en', 'pt', 'es')",
+                "type": "string"
+            },
+            "location": {
+                "description": "Localização opcional para resultados do YouTube (ex: 'São Paulo, SP', 'Lisboa, Portugal')",
+                "type": "string"
+            },
+            "num": {
+                "description": "Número de vídeos do YouTube a retornar (padrão: 10)",
+                "type": "number"
+            },
+            "tbs": {
+                "description": "Filtro de tempo opcional para vídeos do YouTube (ex: 'qdr:h' para última hora, 'qdr:d' para último dia, 'qdr:w' para última semana, 'qdr:m' para último mês, 'qdr:y' para último ano)",
+                "type": "string"
+            }
+        },
+        "required": ["q"]
+    },
+    "instagram_search": {
+        "description": "Ferramenta para buscar conteúdo especificamente do Instagram usando a API Serper.",
+        "parameters": {
+            "q": {
+                "description": "String de consulta para conteúdo do Instagram (ex: 'fotografias de natureza', 'receitas de cozinha')",
+                "type": "string"
+            },
+            "gl": {
+                "description": "Código de região opcional para resultados do Instagram no formato ISO 3166-1 alpha-2 (ex: 'us', 'br', 'pt')",
+                "type": "string"
+            },
+            "hl": {
+                "description": "Código de idioma opcional para resultados do Instagram no formato ISO 639-1 (ex: 'en', 'pt', 'es')",
+                "type": "string"
+            },
+            "location": {
+                "description": "Localização opcional para resultados do Instagram (ex: 'São Paulo, SP', 'Lisboa, Portugal')",
+                "type": "string"
+            },
+            "num": {
+                "description": "Número de resultados do Instagram a retornar (padrão: 10)",
+                "type": "number"
+            },
+            "tbs": {
+                "description": "Filtro de tempo opcional para resultados do Instagram (ex: 'qdr:h' para última hora, 'qdr:d' para último dia, 'qdr:w' para última semana, 'qdr:m' para último mês, 'qdr:y' para último ano)",
+                "type": "string"
+            }
+        },
+        "required": ["q"]
     }
 }
 
@@ -1486,6 +1665,28 @@ def handle_message(message: Dict[Any, Any]) -> Dict[Any, Any]:
                 
             elif tool_name == "video_search":
                 result = search_tools.video_search(**arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "youtube_search":
+                result = search_tools.youtube_search(**arguments)
+                return {
+                    "id": message_id,
+                    "result": {
+                        "content": [
+                            {"type": "text", "text": json.dumps(result, ensure_ascii=False)}
+                        ]
+                    }
+                }
+                
+            elif tool_name == "instagram_search":
+                result = search_tools.instagram_search(**arguments)
                 return {
                     "id": message_id,
                     "result": {

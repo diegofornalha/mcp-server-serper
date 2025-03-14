@@ -1,0 +1,1 @@
+{"id": "0ef2d4d9-84b0-455d-990f-9ce91dc6fb1c", "method": "mcp.CallTool", "params": {"name": "instagram_search", "arguments": {"q": "viagens brasil", "gl": "br", "hl": "pt-br", "num": 5, "location": "Brazil"}}}
