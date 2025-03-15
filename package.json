@@ -12,6 +12,8 @@
   "scripts": {
     "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
     "start": "node build/index.js",
+    "start:sse": "node build/server-sse.js",
+    "start:stdio": "node build/server-stdio.js",
     "prepare": "npm run build",
     "watch": "tsc --watch",
     "inspector": "npx @modelcontextprotocol/inspector build/index.js",
@@ -29,6 +31,7 @@
     "node-fetch": "^2.7.0"
   },
   "devDependencies": {
+    "@types/content-type": "^1.1.8",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.12",

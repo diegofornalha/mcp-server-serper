@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcp-server-serper"
+version = "0.1.0"
+description = "Servidor MCP em Python para busca web via API Serper"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "MCP Serper Team"}
+]
+dependencies = [
+    "fastapi>=0.89.0",
+    "uvicorn>=0.20.0",
+    "httpx>=0.23.0",
+    "pydantic>=1.10.0",
+    "python-dotenv>=0.21.0",
+    "sse-starlette>=1.3.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "isort",
+    "mypy",
+    "flake8",
+    "pytest",
+]
+
+[project.scripts]
+mcp-server-serper = "mcp_server_serper.main:run"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 79
+target-version = ["py38"]
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+
+[tool.flake8]
+max-line-length = 79
+exclude = ".venv,build,dist" 

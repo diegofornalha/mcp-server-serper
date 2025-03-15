@@ -1,0 +1,2 @@
+[console_scripts]
+mcp-server-serper = mcp_server_serper.main:run

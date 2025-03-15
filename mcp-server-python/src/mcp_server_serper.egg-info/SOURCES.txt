@@ -1,0 +1,16 @@
+README.md
+pyproject.toml
+src/mcp_server_serper/__init__.py
+src/mcp_server_serper/__main__.py
+src/mcp_server_serper/config.py
+src/mcp_server_serper/main.py
+src/mcp_server_serper/serper_client.py
+src/mcp_server_serper/server.py
+src/mcp_server_serper.egg-info/PKG-INFO
+src/mcp_server_serper.egg-info/SOURCES.txt
+src/mcp_server_serper.egg-info/dependency_links.txt
+src/mcp_server_serper.egg-info/entry_points.txt
+src/mcp_server_serper.egg-info/requires.txt
+src/mcp_server_serper.egg-info/top_level.txt
+tests/test_serper_client.py
+tests/test_server.py
