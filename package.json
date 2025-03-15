@@ -11,6 +11,7 @@
   ],
   "scripts": {
     "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "start": "node build/index.js",
     "prepare": "npm run build",
     "watch": "tsc --watch",
     "inspector": "npx @modelcontextprotocol/inspector build/index.js",
@@ -21,11 +22,15 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "0.6.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "google-search-results-nodejs": "^2.1.0",
     "node-fetch": "^2.7.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.24",
     "@types/node-fetch": "^2.6.12",

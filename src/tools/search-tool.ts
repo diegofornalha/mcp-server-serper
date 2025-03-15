@@ -3,7 +3,7 @@
  */
 
 import { SerperClient } from '../services/serper-client.js';
-import { IHealthParams } from '../types/serper';
+import { IHealthParams } from '../types/serper.js';
 
 /**
  * Implementação das ferramentas de busca para o servidor MCP.
@@ -29,7 +29,7 @@ export class SerperSearchTools {
   async search(params: any): Promise<any> {
     try {
       return await this.serperClient.search(params);
-    } catch (e) {
+    } catch (e: any) {
       throw new Error(`SearchTool: failed to search for '${params.q}'. ${e.message}`);
     }
   }
@@ -43,7 +43,7 @@ export class SerperSearchTools {
   async scrape(params: any): Promise<any> {
     try {
       return await this.serperClient.scrape(params);
-    } catch (e) {
+    } catch (e: any) {
       throw new Error(`SearchTool: failed to scrape. ${e.message}`);
     }
   }
@@ -57,7 +57,7 @@ export class SerperSearchTools {
   async health(params: IHealthParams): Promise<any> {
     try {
       return await this.serperClient.health(params);
-    } catch (e) {
+    } catch (e: any) {
       return { status: 'unhealthy', error: e.message };
     }
   }

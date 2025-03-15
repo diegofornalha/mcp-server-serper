@@ -3,7 +3,7 @@
  */
 
 import fetch from 'node-fetch';
-import { IHealthParams } from '../types/serper';
+import { IHealthParams } from '../types/serper.js';
 
 /**
  * Cliente para interação com a API Serper.
@@ -130,7 +130,7 @@ export class SerperClient {
     try {
       // Esta é uma chamada fictícia para verificar se a API está respondendo
       return this._makeRequest('GET', '/health', null);
-    } catch (e) {
+    } catch (e: any) {
       // Se a chamada falhar, retornamos um status unhealthy
       return { status: 'unhealthy', error: e.message };
     }

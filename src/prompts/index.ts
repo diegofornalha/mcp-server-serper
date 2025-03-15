@@ -93,18 +93,17 @@ const PROMPTS: Record<string, Prompt> = {
 export class SerperPrompts {
   constructor(private searchTools: SerperSearchTools) {}
 
+  getPromptDefinitions() {
+    return Object.values(PROMPTS);
+  }
+
   async listPrompts() {
     return {
-      prompts: Object.values(PROMPTS)
+      prompts: Object.values(PROMPTS),
     };
   }
 
-  async getPrompt(name: string, args: Record<string, any>) {
-    const prompt = PROMPTS[name];
-    if (!prompt) {
-      throw new Error(`Prompt not found: ${name}`);
-    }
-
+  async getPrompt(name: string, args: Record<string, any> = {}) {
     switch (name) {
       case "research-topic":
         return this.getResearchTopicPrompt(args);
@@ -117,7 +116,7 @@ export class SerperPrompts {
       case "technical-search":
         return this.getTechnicalSearchPrompt(args);
       default:
-        throw new Error("Prompt implementation not found");
+        throw new Error(`Prompt não encontrado: ${name}`);
     }
   }
 

@@ -31,7 +31,7 @@ const prompts = new SerperPrompts(searchTools);
 const server = new Server(
   {
     name: "Servidor MCP Serper",
-    version: "0.1.0",
+    version: "0.2.0",
   },
   {
     capabilities: {
@@ -82,7 +82,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         type: "boolean",
         description: "Se deve corrigir automaticamente a ortografia na consulta"
       },
-      // Operadores avançados de busca
       site: {
         type: "string",
         description: "Limitar resultados a domínio específico (ex: 'github.com', 'wikipedia.org')"
@@ -128,15 +127,38 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         description: "Termos alternativos como string separada por vírgula (ex: 'tutorial,guia,curso', 'documentação,manual')"
       }
     },
-    required: ["q", "gl", "hl"],
+    required: ["q", "gl", "hl"]
   };
 
-  // Retorna lista de ferramentas com esquemas de entrada
   return {
     tools: [
       {
+        name: "google_search",
+        description: "Ferramenta para realizar buscas na web via API Serper e recuperar resultados completos. Capaz de recuperar resultados orgânicos de busca, pessoas também perguntam, buscas relacionadas e gráfico de conhecimento.",
+        inputSchema: searchInputSchema
+      },
+      {
+        name: "scrape",
+        description: "Ferramenta para extrair o conteúdo de uma página web e recuperar o texto e, opcionalmente, o conteúdo em markdown. Também recupera os metadados JSON-LD e os metadados do cabeçalho.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            url: {
+              type: "string",
+              description: "A URL da página web para extrair."
+            },
+            includeMarkdown: {
+              type: "boolean",
+              default: false,
+              description: "Se deve incluir conteúdo em markdown."
+            }
+          },
+          required: ["url"]
+        }
+      },
+      {
         name: "_health",
-        description: "Endpoint de verificação de saúde 03",
+        description: "Endpoint de verificação de saúde",
         inputSchema: {
           type: "object",
           properties: {
@@ -147,274 +169,19 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           },
           required: ["random_string"]
         }
-      },
-      {
-        name: "analyze_serp",
-        description: "Analisar uma SERP (Página de Resultados de Busca) para uma consulta específica",
-        inputSchema: {
-          $schema: "http://json-schema.org/draft-07/schema#",
-          type: "object",
-          additionalProperties: false,
-          properties: {
-            query: {
-              type: "string"
-            },
-            gl: {
-              type: "string",
-              default: "us"
-            },
-            hl: {
-              type: "string",
-              default: "en"
-            },
-            google_domain: {
-              type: "string",
-              default: "google.com"
-            },
-            num: {
-              type: "number",
-              minimum: 1,
-              maximum: 100,
-              default: 10
-            },
-            device: {
-              type: "string",
-              enum: ["desktop", "mobile"],
-              default: "desktop"
-            },
-            location: {
-              type: "string"
-            },
-            safe: {
-              type: "string",
-              enum: ["active", "off"]
-            }
-          },
-          required: ["query"]
-        }
-      },
-      {
-        name: "research_keywords",
-        description: "Pesquisar palavras-chave relacionadas a um tópico ou palavra-chave inicial",
-        inputSchema: {
-          $schema: "http://json-schema.org/draft-07/schema#",
-          type: "object",
-          additionalProperties: false,
-          properties: {
-            keyword: {
-              type: "string" 
-            },
-            language: {
-              type: "string"
-            },
-            location: {
-              type: "string"
-            },
-            include_questions: {
-              type: "boolean",
-              default: false
-            },
-            include_related: {
-              type: "boolean",
-              default: false 
-            },
-            include_suggestions: {
-              type: "boolean",
-              default: false
-            }
-          },
-          required: ["keyword"]
-        }
-      },
-      {
-        name: "analyze_competitors",
-        description: "Analisar concorrentes para uma palavra-chave ou domínio específico",
-        inputSchema: {
-          $schema: "http://json-schema.org/draft-07/schema#",
-          type: "object",
-          additionalProperties: false,
-          properties: {
-            domain: {
-              type: "string"
-            },
-            keyword: {
-              type: "string"
-            },
-            include_features: {
-              type: "boolean"
-            },
-            num_results: {
-              type: "number",
-              minimum: 1,
-              maximum: 100
-            }
-          },
-          required: ["domain"]
-        }
-      },
-      {
-        name: "google_search",
-        description:
-          "Ferramenta para realizar buscas na web via API Serper e recuperar resultados completos. Capaz de recuperar resultados orgânicos de busca, pessoas também perguntam, buscas relacionadas e gráfico de conhecimento.",
-        inputSchema: searchInputSchema,
-      },
-      {
-        name: "scrape",
-        description:
-          "Ferramenta para extrair o conteúdo de uma página web e recuperar o texto e, opcionalmente, o conteúdo em markdown. Também recupera os metadados JSON-LD e os metadados do cabeçalho.",
-        inputSchema: {
-          type: "object",
-          properties: {
-            url: {
-              type: "string",
-              description: "A URL da página web para extrair.",
-            },
-            includeMarkdown: {
-              type: "boolean",
-              description: "Se deve incluir conteúdo em markdown.",
-              default: false,
-            },
-          },
-          required: ["url"],
-        },
-      },
-    ],
+      }
+    ]
   };
 });
 
 /**
- * Manipulador para as ferramentas de busca e análise.
- * Realiza buscas e análises usando a API Serper e retorna os resultados.
+ * Manipulador que executa as ferramentas de busca.
+ * Processa solicitações para diversas ferramentas relacionadas à busca na web.
  */
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  switch (request.params.name) {
-    case "_health": {
-      try {
-        const result = await searchTools.health();
-        return {
-          content: [
-            {
-              type: "text",
-              text: "Servidor está saudável"
-            },
-          ],
-        };
-      } catch (error) {
-        throw new Error(`Verificação de saúde falhou: ${error}`);
-      }
-    }
-    
-    case "analyze_serp": {
-      const { 
-        query, 
-        gl = "us", 
-        hl = "en", 
-        google_domain = "google.com", 
-        num = 10, 
-        device = "desktop", 
-        location, 
-        safe 
-      } = request.params.arguments || {};
-      
-      if (!query) {
-        throw new Error("Consulta é obrigatória para análise de SERP");
-      }
-      
-      try {
-        const result = await searchTools.analyzeSERP({
-          query: String(query),
-          gl: gl as string,
-          hl: hl as string,
-          num: Number(num),
-          device: (device as string) as "desktop" | "mobile",
-          location: location as string | undefined,
-          google_domain: google_domain as string,
-          safe: (safe as string) as "active" | "off" | undefined
-        });
-        
-        return {
-          content: [
-            {
-              type: "text",
-              text: result.analyzedData
-            },
-          ],
-        };
-      } catch (error) {
-        throw new Error(`Análise de SERP falhou: ${error}`);
-      }
-    }
-    
-    case "research_keywords": {
-      const { 
-        keyword, 
-        language, 
-        location, 
-        include_questions = false, 
-        include_related = false, 
-        include_suggestions = false 
-      } = request.params.arguments || {};
-      
-      if (!keyword) {
-        throw new Error("Palavra-chave é obrigatória para pesquisa de palavras-chave");
-      }
-      
-      try {
-        const result = await searchTools.researchKeywords({
-          keyword: String(keyword),
-          language: language as string | undefined,
-          location: location as string | undefined,
-          include_questions: Boolean(include_questions),
-          include_related: Boolean(include_related),
-          include_suggestions: Boolean(include_suggestions)
-        });
-        
-        return {
-          content: [
-            {
-              type: "text",
-              text: result.keywordData
-            },
-          ],
-        };
-      } catch (error) {
-        throw new Error(`Pesquisa de palavras-chave falhou: ${error}`);
-      }
-    }
-    
-    case "analyze_competitors": {
-      const { 
-        domain, 
-        keyword, 
-        include_features = false, 
-        num_results 
-      } = request.params.arguments || {};
-      
-      if (!domain) {
-        throw new Error("Domínio é obrigatório para análise de concorrentes");
-      }
-      
-      try {
-        const result = await searchTools.analyzeCompetitors({
-          domain: String(domain),
-          keyword: keyword as string | undefined,
-          include_features: Boolean(include_features),
-          num_results: num_results ? Number(num_results) : undefined
-        });
-        
-        return {
-          content: [
-            {
-              type: "text",
-              text: result.competitorData
-            },
-          ],
-        };
-      } catch (error) {
-        throw new Error(`Análise de concorrentes falhou: ${error}`);
-      }
-    }
+  console.log(`Tool called: ${request.params.name}`);
 
+  switch (request.params.name) {
     case "google_search": {
       const {
         q,
@@ -452,7 +219,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           hl: String(hl),
           location: location as string | undefined,
           num: num as number | undefined,
-          tbs: tbs as "qdr:h" | "qdr:d" | "qdr:w" | "qdr:m" | "qdr:y" | undefined,
+          tbs: tbs as string | undefined,
           page: page as number | undefined,
           autocorrect: autocorrect as boolean | undefined,
           // Parâmetros avançados de busca
@@ -468,47 +235,83 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           exclude: exclude as string | undefined,
           or: or as string | undefined
         });
+
         return {
           content: [
             {
               type: "text",
-              text: JSON.stringify(result, null, 2),
+              text: JSON.stringify(result, null, 2)
             },
           ],
         };
       } catch (error) {
-        throw new Error(`Busca falhou: ${error}`);
+        throw new Error(`Busca web falhou: ${error}`);
       }
     }
 
     case "scrape": {
-      const url = request.params.arguments?.url as string;
-      const includeMarkdown = request.params.arguments
-        ?.includeMarkdown as boolean;
-      const result = await searchTools.scrape({ url, includeMarkdown });
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(result, null, 2),
-          },
-        ],
-      };
+      const { url, includeMarkdown = false } = request.params.arguments || {};
+
+      if (!url) {
+        throw new Error("URL é obrigatória para scraping");
+      }
+
+      try {
+        const result = await searchTools.scrape({
+          url: String(url),
+          includeMarkdown: Boolean(includeMarkdown)
+        });
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(result, null, 2)
+            },
+          ],
+        };
+      } catch (error) {
+        throw new Error(`Scraping falhou: ${error}`);
+      }
+    }
+
+    case "_health": {
+      try {
+        const result = await searchTools.health({});
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(result, null, 2)
+            },
+          ],
+        };
+      } catch (error) {
+        throw new Error(`Verificação de saúde falhou: ${error}`);
+      }
     }
 
     default:
-      throw new Error("Ferramenta desconhecida");
+      throw new Error(`Ferramenta desconhecida: ${request.params.name}`);
   }
 });
 
-// Trata requisições prompts/list
+/**
+ * Manipulador para listar prompts.
+ */
 server.setRequestHandler(ListPromptsRequestSchema, async () => {
-  return prompts.listPrompts();
+  return {
+    prompts: prompts.getPromptDefinitions(),
+  };
 });
 
-// Trata requisições prompts/get
+/**
+ * Manipulador para obter um prompt específico.
+ */
 server.setRequestHandler(GetPromptRequestSchema, async (request) => {
-  return prompts.getPrompt(request.params.name, request.params.arguments || {});
+  const promptName = request.params.name;
+  return prompts.getPrompt(promptName);
 });
 
 /**
@@ -520,6 +323,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error("Erro do servidor:", error);
+  console.error("Erro ao iniciar o servidor:", error);
   process.exit(1);
 });
